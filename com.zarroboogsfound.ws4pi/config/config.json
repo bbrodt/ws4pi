@@ -1,0 +1,7 @@
+{
+	"httpServerName": "192.168.10.148",
+	"httpServerPort": "8081",
+	"keyStoreFile": "config/keystore.jks",
+	"password": "Sn1ckers",
+	"guid": "1e7fdd42-38ed-467e-bab5-d7f4eb946ccb"
+}
