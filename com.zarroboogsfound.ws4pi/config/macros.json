@@ -1,0 +1,40 @@
+{
+	"name": "Default Macros",
+	"revision": "1.0",
+	"date": "2023-01-21",
+	"description": "First attempt",
+	"macros": [
+		{
+			"name": "surprised",
+			"description": "surprised expression",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Left eyebrow",
+					"targets": [
+						{
+							"position": 80,
+							"startSteps": 1,
+							"stopSteps": 1,
+							"stepDelay": 1
+						}
+					],
+					"priority": 0
+				},
+				{
+					"type": "servo",
+					"name": "Right eyebrow",
+					"targets": [
+						{
+							"position": 80,
+							"startSteps": 1,
+							"stopSteps": 1,
+							"stepDelay": 1
+						}
+					],
+					"priority": 0
+				}
+			]
+		}		
+	]
+}

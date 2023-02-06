@@ -27,8 +27,8 @@ import io.undertow.server.HttpServerExchange;
  */
 public class ErrorReply extends Reply {
 
-	public int level;
-	public String message;
+	public int level = -1;
+	public String message = null;
 	public List<String> stacktrace = new ArrayList<String>();
 	
 	public ErrorReply() {
@@ -49,6 +49,10 @@ public class ErrorReply extends Reply {
 		this(-1, e.getMessage());
 		if (e.getMessage()==null)
 			this.message = e.getClass().getSimpleName();
+		else if (this.message==null)
+			this.message = e.getMessage();
+		else
+			this.message += "\n" + e.getMessage();
 		for (StackTraceElement st : e.getStackTrace()) {
 			stacktrace.add(st.toString());
 		}

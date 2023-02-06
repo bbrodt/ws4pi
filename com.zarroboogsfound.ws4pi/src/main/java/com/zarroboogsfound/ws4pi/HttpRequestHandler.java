@@ -33,17 +33,23 @@ public class HttpRequestHandler {
 	}
 
 	public void handleRequest(final HttpServerExchange exchange) {
-		String req = exchange.getRequestPath();
+		String qp = exchange.getQueryString();
 		//if (exchange.getQueryString()!=null && !exchange.getQueryString().isEmpty())
-		System.out.println("HTTP Request:\n"+exchange.getRequestPath()); //+"?"+exchange.getQueryString());
+		System.out.println("HTTP Request from :"+exchange.getConnection().getPeerAddress().toString()+
+		"\n"+exchange.getRequestURL()+(qp==null||qp.isEmpty() ? "" : ("?"+qp)));
 
 		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
 		HttpString method = exchange.getRequestMethod();
-		if (method == Methods.GET) {
-			handleGetRequest(exchange);
+		try {
+			if (method == Methods.GET) {
+				handleGetRequest(exchange);
+			}
+			else if (method == Methods.POST) {
+				handlePostRequest(exchange);
+			}
 		}
-		else if (method == Methods.POST) {
-			handlePostRequest(exchange);
+		catch (Exception e) {
+			new ErrorReply(e).send(exchange);
 		}
 	}
 
@@ -61,13 +67,13 @@ public class HttpRequestHandler {
 	//
 	// will move servo channel 0 to position 50.
 
-	public void handleGetRequest(HttpServerExchange exchange) {
+	public void handleGetRequest(HttpServerExchange exchange) throws Exception {
 		DeviceController dc = getDeviceController(exchange);
 		if (dc!=null)
 			new ReplyWrapper(dc.handleGetOperation(exchange)).send(exchange);
 	}
 
-	public void handlePostRequest(final HttpServerExchange exchange) {
+	public void handlePostRequest(final HttpServerExchange exchange) throws Exception {
 		DeviceController dc = getDeviceController(exchange);
 		if (dc!=null)
 			new ReplyWrapper(dc.handleSetOperation(exchange)).send(exchange);
@@ -81,12 +87,15 @@ public class HttpRequestHandler {
 			return null;
 		}
 		
+		// the request string contains the device type as a string;
+		// convert this to a DeviceType enum
 		if (req.contains("?"))
 			device = req.substring(1,req.indexOf('?'));
 		else
 			device = req.substring(1);
+		DeviceType type = DeviceType.valueOf(device.toUpperCase());
 
-		DeviceController dc = config.getDeviceProvider().getController(device);
+		DeviceController dc = config.getDeviceProvider().getDeviceController(type);
 		if (dc==null) {
 			new ErrorReply("UNKNOWN DEVICE NAME "+device).send(exchange);
 			return null;

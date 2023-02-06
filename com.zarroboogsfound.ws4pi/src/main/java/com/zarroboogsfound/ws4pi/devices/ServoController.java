@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Deque;
 import java.util.Map;
 
+import com.pi4j.component.Component;
 import com.pi4j.component.servo.Servo;
 import com.pi4j.component.servo.impl.GenericServo;
 import com.pi4j.component.servo.impl.PCA9685GpioServoProvider;
@@ -14,10 +15,15 @@ import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
+import com.pi4j.io.gpio.GpioProvider;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
+import com.zarroboogsfound.ws4pi.DeviceType;
+import com.zarroboogsfound.ws4pi.WS4PiConfig;
+import com.zarroboogsfound.ws4pi.WS4PiConfig.Device;
 import com.zarroboogsfound.ws4pi.data.QueryParams;
+import com.zarroboogsfound.ws4pi.macros.TargetPosition;
 
 import io.undertow.server.HttpServerExchange;
 
@@ -27,119 +33,232 @@ public class ServoController extends DeviceController {
     private PCA9685GpioProvider gpioProvider;
     private PCA9685GpioServoProvider gpioServoProvider;
     private Servo[] servos;
-    private Sweeper sweeper;
+    private Device[] devices;
+    private Positioner positioners[];
+    private float currentPositions[];
 
     public ServoController() {
-    	super("servo");
-        servos = new Servo[16];
+    	super(DeviceType.SERVO);
     }
     
-    public void initialize() throws UnsupportedBusNumberException, IOException {
+    public void initialize(WS4PiConfig config) throws UnsupportedBusNumberException, IOException {
+    	
+        devices = config.getDevices(DeviceType.SERVO);
+        servos = new Servo[devices.length];
+        currentPositions = new float[devices.length];
+        positioners = new Positioner[devices.length];
+        
         gpioProvider = createProvider();
         provisionPwmOutputs(gpioProvider);
         gpioServoProvider = new PCA9685GpioServoProvider(gpioProvider);
 
         
-        for (int s=0; s<servos.length; ++s) {
-            servos[s] = new GenericServo(gpioServoProvider.getServoDriver(PCA9685Pin.ALL[s]), "Servo Channel " + s);
-            servos[s].setProperty(Servo.PROP_END_POINT_LEFT, Float.toString(Servo.END_POINT_MAX));
-            servos[s].setProperty(Servo.PROP_END_POINT_RIGHT, Float.toString(Servo.END_POINT_MAX));
+        for (int channel=0; channel<servos.length; ++channel) {
+            servos[channel] = new GenericServo(gpioServoProvider.getServoDriver(PCA9685Pin.ALL[channel]), devices[channel].name);
+            servos[channel].setProperty(Servo.PROP_END_POINT_LEFT, Float.toString(Servo.END_POINT_MAX));
+            servos[channel].setProperty(Servo.PROP_END_POINT_RIGHT, Float.toString(Servo.END_POINT_MAX));
+            servos[channel].setProperty(Servo.PROP_IS_REVERSE, Boolean.toString(devices[channel].limits.reversed));
         }
     }
 
-    public void setPosition(int channel, float pos) throws IllegalArgumentException {
-    	validate(channel, pos);
-        stopSweeper();
-        
-        servos[channel].setPosition(pos);
+    public void setSpeed(int speed) {
+    	
     }
     
-    public void setPositionSmooth(int channel, float pos) throws IllegalArgumentException {
-    	validate(channel, pos);
-        stopSweeper();
+	@Override
+	public void start(WS4PiConfig config) {
+		// move all servos to their start positions
+        for (int channel=0; channel<servos.length; ++channel) {
+        	Device d = devices[channel];
+        	try {
+				setPosition(channel, d.limits.startPos);
+			} catch (DeviceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        //////// TEST CODE
+        /*
+        TargetPosition t[] = new TargetPosition[1];
+        t[0] = new TargetPosition();
+        t[0].startSteps = 12;
+        t[0].stopSteps = 12;
+        t[0].stepDelay = 1;
+        try {
+        	while(true) {
+	            t[0].position = 80;
+	            positioners[1] = new Positioner(1, t);
+				while (isBusy(1))
+					Thread.sleep(100);
+	            positioners[1] = null;
+
+				t[0].position = -80;
+	            positioners[1] = new Positioner(1, t);
+				while (isBusy(1))
+					Thread.sleep(100);
+	            positioners[1] = null;
+        	}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+	}
+
+	@Override
+	public void stop() {
+		// move all servos back to their start positions.
+        for (int channel=0; channel<servos.length; ++channel) {
+        	Device d = devices[channel];
+        	try {
+                TargetPosition t[] = new TargetPosition[1];
+                t[0] = new TargetPosition();
+        		t[0].position = d.limits.startPos;
+                t[0].startSteps = 12;
+                t[0].stopSteps = 12;
+                t[0].stepDelay = 1;
+
+	            positioners[channel] = new Positioner(channel, t);
+				while (isBusy(1))
+					Thread.sleep(100);
+	            positioners[channel] = null;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+	}
+	
+	@Override
+	public void shutdown() {
+		gpioProvider.shutdown();
+	}
+	
+    public void setPosition(int channel, float pos) throws DeviceException {
+    	setPosition(channel, pos, 0);
     }
     
-    private void validate(int channel) throws IllegalArgumentException {
-    	validate(channel, 0);
-    }
-    
-    private void validate(int channel, float pos) throws IllegalArgumentException {
-    	if (channel < 0 || channel >= servos.length)
-    		throw new IllegalArgumentException("Channel "+channel+" invalid - must be in the range 0 to "+(servos.length-1));
-        if (pos < Servo.POS_MAX_LEFT || pos > Servo.POS_MAX_RIGHT) {
-        	throw new IllegalArgumentException("Servo position "+pos+" exceeded - must be in the range "
-        	+Servo.POS_MAX_LEFT+" to "+Servo.POS_MAX_RIGHT);
+    public void setPosition(int channel, float pos, int stepDelay) throws DeviceException {
+    	pos = adjustPos(channel, pos);
+        stopPositioner(channel);
+        if (stepDelay==0)
+        	servos[channel].setPosition(currentPositions[channel] = pos);
+        else {
         	
         }
     }
     
-    private void stopSweeper() {
-    	if (sweeper!=null) {
-    		sweeper.interrupt();
-    		sweeper = null;
-    	}
+    public void setTargetPositions(int channel, TargetPosition targets[]) throws DeviceException {
+    	super.validate(channel);
+        stopPositioner(channel);
+        positioners[channel] = new Positioner(channel,targets);
+        positioners[channel].start();
     }
     
-    private class Sweeper extends Thread {
+    public boolean isBusy(int channel) {
+    	if (positioners[channel]!=null && positioners[channel].isAlive())
+    		return true;
+    	return false;
+    }
+    
+    private float adjustPos(int channel, float pos) throws DeviceException {
+    	super.validate(channel);
+    	Device d = devices[channel];
+        if (pos < d.limits.minPos) {
+        	pos = d.limits.minPos;
+        }
+        if (pos > d.limits.maxPos)
+        	pos = d.limits.maxPos;
+        return pos;
+    }
+    
+    private void stopPositioner(int channel) {
+    	if (positioners[channel]!=null && positioners[channel].isAlive()) {
+    		positioners[channel].interrupt();
+    		positioners[channel] = null;
+    	}
+    }
 
-        private int speed = 5;
-        private final int step = 1; // make sure this is always true: 100 % step = 0
-        private final int maxSleepBetweenSteps = 100;
-        private final int channel;
+    private class Positioner extends Thread {
+        private int channel;
+        private float currentPosition;
+        private float endPosition;
+        private float startSteps;
+        private float middleSteps;
+        private float stopSteps;
+        TargetPosition targets[];
         
-        public Sweeper(int channel, float pos) {
+        @SuppressWarnings("unused")
+		private Positioner() {
+        }
+        
+        public Positioner(int channel, TargetPosition targets[]) {
+        	this.targets = targets;
         	this.channel = channel;
         }
         
         @Override
         public void run() {
-            int position = 0;
-            Orientation orientation = Orientation.RIGHT;
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    if (orientation == Orientation.RIGHT) {
-                        if (position < Servo.POS_MAX_RIGHT) {
-                            position += step;
-                        } else {
-                            orientation = Orientation.LEFT;
-                            position -= step;
-                        }
-                    } else if (orientation == Orientation.LEFT) {
-                        if (position > Servo.POS_MAX_LEFT) {
-                            position -= step;
-                        } else {
-                            orientation = Orientation.RIGHT;
-                            position += step;
-                        }
-                    } else {
-                        System.err.println("Unsupported value for enum <ServoBase.Orientation>: [" + orientation + "].");
-                    }
-
-                    servos[channel].setPosition(position);
-                    Thread.currentThread();
-                    if (position % 10 == 0) {
-                        System.out.println("Position: " + position);
-                    }
-                    if (position==0 || position==100 || position==-100)
-                        Thread.sleep(1000);
-                    Thread.sleep(maxSleepBetweenSteps / speed);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-
-        public void setSpeed(int speed) {
-            if (speed < 1) {
-                this.speed = 1;
-            } else if (speed > 100) {
-                this.speed = 100;
-            } else {
-                this.speed = speed;
-            }
-        }
+        	try {
+	        	for (TargetPosition t : targets) {
+		        	endPosition = adjustPos(channel,t.position);
+		        	currentPosition = currentPositions[channel];
+		        	float distance  = (int)Math.abs(endPosition - currentPosition);
+		    		startSteps = t.startSteps;
+		    		stopSteps = t.stopSteps;
+		        	if (distance <= startSteps + stopSteps) {
+		        		startSteps = stopSteps = distance/2;
+		        		middleSteps = 0;
+		        	}
+		        	else {
+		        		middleSteps = distance - (startSteps + stopSteps);
+		        	}
+		
+		            while (!Thread.currentThread().isInterrupted() && currentPosition!=endPosition) {
+		            	try {
+		            		// this must all happen atomically to ensure
+		            		// currentPositions[] is properly updated
+		                	if (endPosition < currentPosition)
+		                		--currentPosition;
+		                	else
+		                		++currentPosition;
+		                    servos[channel].setPosition(currentPosition);
+				            currentPositions[channel] = currentPosition;
+		            	}
+		            	catch (Exception e) {
+		            		throw new InterruptedException();
+		            	}
+	                    if (startSteps>0) {
+	                    	Thread.sleep((long) (startSteps*startSteps*t.stepDelay));
+	                    	--startSteps;
+	                    }
+	                    else if (middleSteps>0) {
+	                    	Thread.sleep(3);
+	                    	--middleSteps;
+	                    }
+	                    else if (stopSteps>0) {
+	                    	Thread.sleep((long) (stopSteps*stopSteps*t.stepDelay));
+	                    	--stopSteps;
+	                    	
+	                    }
+	                    else {
+	                    	break;
+	                    }
+		            }
+	        	}
+	        } catch (InterruptedException ex) {
+	            Thread.currentThread().interrupt();
+	        } catch (DeviceException e) {
+				e.printStackTrace();
+			}
+	    }
     }
     
+    public GpioProvider getGpioProvider() throws Exception {
+    	if (gpioProvider==null)
+    		gpioProvider = createProvider();
+    	return gpioProvider;
+    }
+
     private PCA9685GpioProvider createProvider() throws IOException, UnsupportedBusNumberException {
         // This would theoretically lead into a resolution of 5 microseconds per step:
         // 4096 Steps (12 Bit)
@@ -180,28 +299,32 @@ public class ServoController extends DeviceController {
     }
 
 	@Override
-	public Object handleGetOperation(HttpServerExchange exchange) {
-		try {
-			int channel = QueryParams.getInt(exchange, "channel").get().intValue();
-			validate(channel);
-			return Float.valueOf(servos[channel].getPosition());
-		}
-		catch (Exception e) {
-			return e;
-		}
+	public Object handleGetOperation(HttpServerExchange exchange) throws DeviceException {
+		int channel = QueryParams.getInt(exchange, "channel").get().intValue();
+		validate(channel);
+		return servos[channel]; //Float.valueOf(position);
 	}
 
 	@Override
-	public Object handleSetOperation(HttpServerExchange exchange) {
-		try {
-			int channel = QueryParams.getInt(exchange, "channel").get().intValue();
-			float position = QueryParams.getFloat(exchange, "position").get().floatValue();
-			validate(channel, position);
-			servos[channel].setPosition(position);
-			return Float.valueOf(position);
-		}
-		catch (Exception e) {
-			return e;
-		}
+	public Object handleSetOperation(HttpServerExchange exchange) throws DeviceException {
+		int channel = QueryParams.getInt(exchange, "channel").get().intValue();
+		float position = QueryParams.getFloat(exchange, "position").get().floatValue();
+		position = adjustPos(channel, position);
+		servos[channel].setPosition(position);
+		return servos[channel]; //Float.valueOf(position);
+	}
+
+	@Override
+	public int getComponentCount() {
+		if (servos!=null)
+			return servos.length;
+		return 0;
+	}
+
+	@Override
+	public Component getComponent(int id) {
+		if (servos!=null && servos.length>id)
+			return servos[id];
+		return null;
 	}
 }

@@ -27,6 +27,7 @@ public class WS4PiServerMain {
 	 */
 	public static void main(String[] args) {
 		
+		// load the configuration file and fire up the server
     	WS4PiConfig config = null;
 		try {
 			String hostname = InetAddress.getLocalHost().getHostName().toLowerCase();
@@ -43,9 +44,34 @@ public class WS4PiServerMain {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		Runtime.getRuntime().addShutdownHook(new ShutdownHook(config));
 		
 		WS4PiServer server = new WS4PiServer(config);
 		server.start();
+		
+		
+		String s = System.getProperty("runInEclipse");
+		if (Boolean.parseBoolean(s)) {
+		    System.out.println("You're using Eclipse; click in this console and " +
+		            "press ENTER to call System.exit() and run the shutdown routine.");
+		    try {
+		        System.in.read();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		    System.out.println("Calling shutdown hooks and exiting!");
+		    System.exit(0);
+		}
+		
+		while (server.isRunning()) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private static SSLContext createSslContext(String keystoreFile, String password)

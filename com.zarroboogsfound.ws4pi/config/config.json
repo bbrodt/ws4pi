@@ -3,5 +3,441 @@
 	"httpServerPort": "8081",
 	"keyStoreFile": "config/keystore.jks",
 	"password": "Sn1ckers",
-	"guid": "1e7fdd42-38ed-467e-bab5-d7f4eb946ccb"
+	"guid": "1e7fdd42-38ed-467e-bab5-d7f4eb946ccb",
+	"devices": [
+		{
+			"type": "stepper",
+			"name": "Right Arm",
+			"id" : 0,
+			"pins": [
+				{
+					"name": "IN1",
+					"provision": "digital output low",
+					"address": 21
+				},
+				{
+					"name": "IN2",
+					"provision": "digital output low",
+					"address": 22
+				},
+				{
+					"name": "IN3",
+					"provision": "digital output low",
+					"address": 23
+				},
+				{
+					"name": "IN4",
+					"provision": "digital output low",
+					"address": 24
+				}
+			]
+		},
+		{
+			"type": "stepper",
+			"name": "Left Arm",
+			"id" : 1,
+			"pins": [
+				{
+					"name": "IN1",
+					"provision": "digital output low",
+					"address": 26
+				},
+				{
+					"name": "IN2",
+					"provision": "digital output low",
+					"address": 27
+				},
+				{
+					"name": "IN3",
+					"provision": "digital output low",
+					"address": 28
+				},
+				{
+					"name": "IN4",
+					"provision": "digital output low",
+					"address": 29
+				}
+			]
+		},
+
+		{
+			"type": "switch",
+			"name": "Right Arm Limit Switch",
+			"id": 0,
+			"pins": [
+				{
+					"name": "IN",
+					"provision": "digital input pullup",
+					"address" : 25
+				}
+			]
+		},
+		{
+			"type": "switch",
+			"name": "Left Arm Limit Switch",
+			"id": 1,
+			"pins": [
+				{
+					"name": "IN",
+					"provision": "digital input pullup",
+					"address" : 31
+				}
+			]
+		},
+		
+		{
+			"type": "motor_bridge",
+			"name": "Right Track Motor",
+			"id": 0,
+			"pins": [
+				{
+					"name": "IN1",
+					"provision": "digital output low",
+					"address": 4
+				},
+				{
+					"name": "IN2",
+					"provision": "digital output low",
+					"address": 5
+				},
+				{
+					"name": "ENA",
+					"provision": "digital softpwm low",
+					"address": 6
+				}
+			]
+		},
+		{
+			"type": "motor_bridge",
+			"name": "Left Track Motor",
+			"id": 1,
+			"pins": [
+				{
+					"name": "IN3",
+					"provision": "digital output low",
+					"address": 16
+				},
+				{
+					"name": "IN4",
+					"provision": "digital output low",
+					"address": 15
+				},
+				{
+					"name": "ENB",
+					"provision": "digital softpwm low",
+					"address": 0
+				}
+			]
+		},
+		{
+			"type": "ultrasound",
+			"name": "Look-Down Ultrasound Distance Sensor",
+			"id": 0,
+			"pins": [
+				{
+					"name": "TRIG",
+					"provision": "digital output low",
+					"address": 2
+				},
+				{
+					"name": "ECHO",
+					"provision": "digital input pulldown",
+					"address": 3
+				}
+			]
+		},
+		
+		
+		{
+			"type": "servo",
+			"name": "Right Shoulder",
+			"id": 0,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Right Arm",
+			"id": 1,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Right Hand",
+			"id": 2,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Right Wrist",
+			"id": 3,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Left Shoulder",
+			"id": 4,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Left Arm",
+			"id": 5,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Left Hand",
+			"id": 6,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Left Wrist",
+			"id": 7,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Head Turn",
+			"id": 8,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Neck Top",
+			"id": 9,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Neck Bottom",
+			"id": 10,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "UNUSED",
+			"id": 11,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Left Eyebrow",
+			"id": 12,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Left Eye",
+			"id": 13,
+			"limits": {
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Right Eyebrow",
+			"id": 14,
+			"limits": {
+				"reversed": "true",
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
+			"name": "Right Eye",
+			"id": 15,
+			"limits": {
+				"reversed": "true",
+				"startPos": 0,
+				"minPos": -80,
+				"maxPos": 80,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		}
+		
+	]
 }

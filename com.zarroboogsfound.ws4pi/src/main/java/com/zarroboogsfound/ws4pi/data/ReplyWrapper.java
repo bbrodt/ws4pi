@@ -22,6 +22,8 @@ public class ReplyWrapper extends Reply {
 	public Object object;
 	
 	public ReplyWrapper(Object data) {
+		if (data==null)
+			data = "NULL";
 		this.type = data.getClass().getName();
 		this.object = data;
 	}
