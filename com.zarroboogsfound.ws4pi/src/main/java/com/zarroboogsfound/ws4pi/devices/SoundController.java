@@ -1,5 +1,7 @@
 package com.zarroboogsfound.ws4pi.devices;
 
+import java.io.IOException;
+
 import com.pi4j.component.Component;
 import com.zarroboogsfound.ws4pi.DeviceType;
 import com.zarroboogsfound.ws4pi.WS4PiConfig;
@@ -32,8 +34,20 @@ public class SoundController extends DeviceController {
 
 	@Override
 	public void start(WS4PiConfig config) {
-		// TODO Auto-generated method stub
-
+		play("sounds/startup.wav");
+	}
+	
+	@Override
+	public void stop() {
+		play("sounds/shutdown.wav");
+	}
+	
+	public void play(String filepath) {
+		try {
+			Runtime.getRuntime().exec("aplay "+filepath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isBusy(int id) {
@@ -47,7 +61,6 @@ public class SoundController extends DeviceController {
 
 	@Override
 	public int getComponentCount() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 

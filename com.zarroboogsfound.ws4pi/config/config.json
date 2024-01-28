@@ -146,6 +146,35 @@
 				}
 			]
 		},
+		{
+			"type": "ultrasound",
+			"name": "Look-Forward Ultrasound Distance Sensor",
+			"id": 1,
+			"pins": [
+				{
+					"name": "TRIG",
+					"provision": "digital output low",
+					"address": 12
+				},
+				{
+					"name": "ECHO",
+					"provision": "digital input pulldown",
+					"address": 13
+				}
+			]
+		},
+		{
+			"type": "led",
+			"name": "Head-Mounted Laser",
+			"id": 0,
+			"pins": [
+				{
+					"name": "OUT",
+					"provision": "digital output low",
+					"address": 14
+				}
+			]
+		},
 		
 		
 		{
@@ -153,7 +182,7 @@
 			"name": "Right Shoulder",
 			"id": 0,
 			"limits": {
-				"startPos": 0,
+				"startPos": -80,
 				"minPos": -80,
 				"maxPos": 80,
 				"maxTorque": 25,
@@ -171,9 +200,10 @@
 			"name": "Right Arm",
 			"id": 1,
 			"limits": {
-				"startPos": 0,
+				"reversed": "true",
+				"startPos": 60,
 				"minPos": -80,
-				"maxPos": 80,
+				"maxPos": 70,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -225,7 +255,7 @@
 			"name": "Left Shoulder",
 			"id": 4,
 			"limits": {
-				"startPos": 0,
+				"startPos": 65,
 				"minPos": -80,
 				"maxPos": 80,
 				"maxTorque": 25,
@@ -243,8 +273,8 @@
 			"name": "Left Arm",
 			"id": 5,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
+				"startPos": 70,
+				"minPos": -70,
 				"maxPos": 80,
 				"maxTorque": 25,
 				"speed": 300
@@ -298,8 +328,8 @@
 			"id": 8,
 			"limits": {
 				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"minPos": -100,
+				"maxPos": 100,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -333,7 +363,7 @@
 			"name": "Neck Bottom",
 			"id": 10,
 			"limits": {
-				"startPos": 0,
+				"startPos": 60,
 				"minPos": -80,
 				"maxPos": 80,
 				"maxTorque": 25,
@@ -369,9 +399,9 @@
 			"name": "Left Eyebrow",
 			"id": 12,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": 90,
+				"minPos": -100,
+				"maxPos": 90,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -387,9 +417,9 @@
 			"name": "Left Eye",
 			"id": 13,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": 10,
+				"minPos": -30,
+				"maxPos": 30,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -406,9 +436,9 @@
 			"id": 14,
 			"limits": {
 				"reversed": "true",
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": 10,
+				"minPos": -100,
+				"maxPos": 100,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -425,9 +455,9 @@
 			"id": 15,
 			"limits": {
 				"reversed": "true",
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": 20,
+				"minPos": -30,
+				"maxPos": 45,
 				"maxTorque": 25,
 				"speed": 300
 			},

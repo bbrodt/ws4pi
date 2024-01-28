@@ -6,6 +6,7 @@ public enum DeviceType {
 	MOTOR_BRIDGE,
 	ULTRASOUND,
 	SERVO,
+	LED,
 	MACRO,
 	SOUND, // plays a sound from the ./sound folder
 	DELAY, // special time delay device type used for pauses in macro execution

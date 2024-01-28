@@ -12,6 +12,7 @@ import com.zarroboogsfound.ws4pi.devices.DelayController;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
 import com.zarroboogsfound.ws4pi.devices.DeviceControllerProvider;
 import com.zarroboogsfound.ws4pi.devices.DualMotorBridgeController;
+import com.zarroboogsfound.ws4pi.devices.LEDController;
 import com.zarroboogsfound.ws4pi.devices.MacroController;
 import com.zarroboogsfound.ws4pi.devices.ServoController;
 import com.zarroboogsfound.ws4pi.devices.SoundController;
@@ -45,6 +46,7 @@ public class WS4PiServer implements DeviceControllerProvider {
 	private MacroController macroController = new MacroController();
 	private SoundController soundController = new SoundController();
 	private DelayController delayController = new DelayController();
+	private LEDController ledController = new LEDController();
 	private DeviceController[] deviceControllers = new DeviceController[] {
 			servoController,
 			motoBridgeController,
@@ -53,7 +55,8 @@ public class WS4PiServer implements DeviceControllerProvider {
 			ultrasoundController,
 			macroController,
 			soundController,
-			delayController
+			delayController,
+			ledController
 	};
 	private Thread runner;
 
