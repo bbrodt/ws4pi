@@ -11,15 +11,14 @@ import com.zarroboogsfound.ws4pi.DeviceType;
 import com.zarroboogsfound.ws4pi.WS4PiConfig;
 import com.zarroboogsfound.ws4pi.WS4PiConfig.Device;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
-import com.zarroboogsfound.ws4pi.devices.DeviceException;
 import com.zarroboogsfound.ws4pi.devices.ServoController;
-import com.zarroboogsfound.ws4pi.devices.UltrasoundController;
+import com.zarroboogsfound.ws4pi.devices.SoundController;
 
 public class MacroRunner {
-	private WS4PiConfig config = WS4PiConfig.getInstance();
-	private MacroConfig macroConfig = MacroConfig.getInstance();
-	private List<MacroRunnable> activeRunnables = new ArrayList<MacroRunnable>();
-	private Queue<Macro> macroQueue = new ConcurrentLinkedQueue<Macro>();
+	private WS4PiConfig config;
+	private MacroConfig macroConfig;
+	private List<MacroRunnable> activeRunnables;
+	private Queue<Macro> macroQueue;
 	private Thread runner;
 	private boolean stopExecution = false;
 	
@@ -108,9 +107,13 @@ public class MacroRunner {
 					case MOTOR_BRIDGE:
 						break;
 					case SERVO:
-						ServoController sc = (ServoController)controller;
+						System.out.println("SERVO "+a.name);
+						ServoController servoCtl = (ServoController)controller;
 						Device d = config.getDevice(DeviceType.SERVO, a.name);
-						sc.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
+						if (a.targets.size()==1 && a.targets.get(0).startSteps==0 && a.targets.get(0).stopSteps==0 )
+							servoCtl.setPosition(d.id, a.targets.get(0).position );
+						else
+							servoCtl.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
 						break;
 					case STEPPER:
 						break;
@@ -119,6 +122,17 @@ public class MacroRunner {
 					case ULTRASOUND:
 						break;
 					case DELAY:
+						System.out.println("DELAY "+a.value);
+						Thread.sleep((long)a.value);
+						break;
+					case LED:
+						break;
+					case NULL_DEVICE:
+						break;
+					case SOUND:
+						System.out.println("SOUND "+a.name);
+						SoundController soundCtl = (SoundController)controller;
+						soundCtl.play("sounds/" + a.name);
 						break;
 					default:
 						break;
@@ -137,6 +151,11 @@ public class MacroRunner {
 	}
 	
 	public void start() {
+		config = WS4PiConfig.getInstance();
+		macroConfig = MacroConfig.getInstance();
+		activeRunnables = new ArrayList<MacroRunnable>();
+		macroQueue = new ConcurrentLinkedQueue<Macro>();
+
 		// create a thread to poll the macro queue
 		Thread poller = new Thread() {
 
@@ -175,6 +194,10 @@ public class MacroRunner {
 				e.printStackTrace();
 			}
 		}
+		config = null;
+		macroConfig = null;
+		activeRunnables = null;
+		macroQueue = null;
 	}
 	
 	public boolean isActive() {
@@ -218,8 +241,6 @@ public class MacroRunner {
 			for (Action mra : mr.getMacro().actions) {
 				for (Action ma : m.actions ) {
 					if (mra.type == ma.type && mra.name.equals(ma.name)) {
-						// queue this macro
-						enqueueMacro(m);
 						return false;
 					}
 				}

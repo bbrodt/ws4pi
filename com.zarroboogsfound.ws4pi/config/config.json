@@ -182,9 +182,10 @@
 			"name": "Right Shoulder",
 			"id": 0,
 			"limits": {
-				"startPos": -80,
-				"minPos": -80,
-				"maxPos": 80,
+				"reversed": "true",
+				"startPos": -60,
+				"minPos": -60,
+				"maxPos": 90,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -201,9 +202,9 @@
 			"id": 1,
 			"limits": {
 				"reversed": "true",
-				"startPos": 60,
-				"minPos": -80,
-				"maxPos": 70,
+				"startPos": 50,
+				"minPos": -60,
+				"maxPos": 60,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -219,9 +220,9 @@
 			"name": "Right Hand",
 			"id": 2,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": -95,
+				"minPos": -95,
+				"maxPos": 25,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -238,8 +239,8 @@
 			"id": 3,
 			"limits": {
 				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"minPos": -100,
+				"maxPos": 100,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -255,9 +256,9 @@
 			"name": "Left Shoulder",
 			"id": 4,
 			"limits": {
-				"startPos": 65,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": -90,
+				"minPos": -90,
+				"maxPos": 60,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -291,9 +292,10 @@
 			"name": "Left Hand",
 			"id": 6,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"reversed": "true",
+				"startPos": -25,
+				"minPos": -25,
+				"maxPos": 95,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -309,24 +311,7 @@
 			"name": "Left Wrist",
 			"id": 7,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
-				"maxTorque": 25,
-				"speed": 300
-			},
-			"lags": [
-				{
-					"position": 40.0,
-					"time": 0.35
-				}
-			]
-		},
-		{
-			"type": "servo",
-			"name": "Head Turn",
-			"id": 8,
-			"limits": {
+				"reversed": "true",
 				"startPos": 0,
 				"minPos": -100,
 				"maxPos": 100,
@@ -342,12 +327,31 @@
 		},
 		{
 			"type": "servo",
+			"name": "Head Turn",
+			"id": 8,
+			"limits": {
+				"reversed": "true",
+				"startPos": 17,
+				"minPos": -75,
+				"maxPos": 70,
+				"maxTorque": 25,
+				"speed": 300
+			},
+			"lags": [
+				{
+					"position": 40.0,
+					"time": 0.35
+				}
+			]
+		},
+		{
+			"type": "servo",
 			"name": "Neck Top",
 			"id": 9,
 			"limits": {
-				"startPos": 0,
-				"minPos": -80,
-				"maxPos": 80,
+				"startPos": -75,
+				"minPos": -100,
+				"maxPos": 70,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -363,9 +367,9 @@
 			"name": "Neck Bottom",
 			"id": 10,
 			"limits": {
-				"startPos": 60,
+				"startPos": 20,
 				"minPos": -80,
-				"maxPos": 80,
+				"maxPos": 70,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -399,9 +403,9 @@
 			"name": "Left Eyebrow",
 			"id": 12,
 			"limits": {
-				"startPos": 90,
-				"minPos": -100,
-				"maxPos": 90,
+				"startPos": 100,
+				"minPos": -60,
+				"maxPos": 100,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -418,8 +422,8 @@
 			"id": 13,
 			"limits": {
 				"startPos": 10,
-				"minPos": -30,
-				"maxPos": 30,
+				"minPos": -60,
+				"maxPos": 100,
 				"maxTorque": 25,
 				"speed": 300
 			},
@@ -436,8 +440,8 @@
 			"id": 14,
 			"limits": {
 				"reversed": "true",
-				"startPos": 10,
-				"minPos": -100,
+				"startPos": 100,
+				"minPos": -60,
 				"maxPos": 100,
 				"maxTorque": 25,
 				"speed": 300
@@ -455,9 +459,9 @@
 			"id": 15,
 			"limits": {
 				"reversed": "true",
-				"startPos": 20,
-				"minPos": -30,
-				"maxPos": 45,
+				"startPos": 10,
+				"minPos": -60,
+				"maxPos": 70,
 				"maxTorque": 25,
 				"speed": 300
 			},

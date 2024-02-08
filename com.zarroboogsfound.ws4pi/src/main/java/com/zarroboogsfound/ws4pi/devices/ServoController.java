@@ -2,14 +2,11 @@ package com.zarroboogsfound.ws4pi.devices;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Deque;
-import java.util.Map;
 
 import com.pi4j.component.Component;
 import com.pi4j.component.servo.Servo;
 import com.pi4j.component.servo.impl.GenericServo;
 import com.pi4j.component.servo.impl.PCA9685GpioServoProvider;
-import com.pi4j.component.servo.impl.GenericServo.Orientation;
 import com.pi4j.gpio.extension.pca.PCA9685GpioProvider;
 import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.io.gpio.GpioController;
@@ -71,8 +68,13 @@ public class ServoController extends DeviceController {
         for (int channel=0; channel<servos.length; ++channel) {
         	Device d = devices[channel];
         	try {
+        		System.out.println("Initializing channel "+channel);
 				setPosition(channel, d.limits.startPos);
+				Thread.sleep(500);
 			} catch (DeviceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -120,7 +122,7 @@ public class ServoController extends DeviceController {
 
 	            positioners[channel] = new Positioner(channel, t);
 				while (isBusy(1))
-					Thread.sleep(100);
+					Thread.sleep(500);
 	            positioners[channel] = null;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -130,6 +132,21 @@ public class ServoController extends DeviceController {
 	
 	@Override
 	public void shutdown() {
+        for (int channel=0; channel<servos.length; ++channel) {
+        	Device d = devices[channel];
+        	try {
+        		System.out.println("Closing channel "+channel);
+				setPosition(channel, d.limits.startPos);
+				Thread.sleep(100);
+			} catch (DeviceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
 		gpioProvider.shutdown();
 	}
 	
@@ -205,6 +222,10 @@ public class ServoController extends DeviceController {
 		        	float distance  = (int)Math.abs(endPosition - currentPosition);
 		    		startSteps = t.startSteps;
 		    		stopSteps = t.stopSteps;
+		    		if (startSteps==0 && stopSteps==0) {
+		    			servos[channel].setPosition(endPosition);
+		    		}
+		    		
 		        	if (distance <= startSteps + stopSteps) {
 		        		startSteps = stopSteps = distance/2;
 		        		middleSteps = 0;
@@ -302,12 +323,17 @@ public class ServoController extends DeviceController {
 	public Object handleGetOperation(HttpServerExchange exchange) throws DeviceException {
 		int channel = QueryParams.getInt(exchange, "channel").get().intValue();
 		validate(channel);
-		return servos[channel]; //Float.valueOf(position);
+		if (servos[channel]==null)
+			throw new DeviceException("Servo channel "+channel+" is not initialized");
+		return servos[channel];
 	}
 
 	@Override
 	public Object handleSetOperation(HttpServerExchange exchange) throws DeviceException {
 		int channel = QueryParams.getInt(exchange, "channel").get().intValue();
+		validate(channel);
+		if (servos[channel]==null)
+			throw new DeviceException("Servo channel "+channel+" is not initialized");
 		float position = QueryParams.getFloat(exchange, "position").get().floatValue();
 		position = adjustPos(channel, position);
 		servos[channel].setPosition(position);

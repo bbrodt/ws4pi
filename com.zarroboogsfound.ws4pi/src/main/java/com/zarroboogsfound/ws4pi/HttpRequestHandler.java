@@ -67,16 +67,29 @@ public class HttpRequestHandler {
 	//
 	// will move servo channel 0 to position 50.
 
-	public void handleGetRequest(HttpServerExchange exchange) throws Exception {
+	public void handleGetRequest(HttpServerExchange exchange) {
 		DeviceController dc = getDeviceController(exchange);
-		if (dc!=null)
-			new ReplyWrapper(dc.handleGetOperation(exchange)).send(exchange);
+		if (dc!=null) {
+			try {
+				new ReplyWrapper(dc.handleGetOperation(exchange)).send(exchange);
+			}
+			catch (Exception e) {
+				new ErrorReply(e).send(exchange);
+			}
+		}
 	}
 
-	public void handlePostRequest(final HttpServerExchange exchange) throws Exception {
+	public void handlePostRequest(final HttpServerExchange exchange) {
 		DeviceController dc = getDeviceController(exchange);
 		if (dc!=null)
-			new ReplyWrapper(dc.handleSetOperation(exchange)).send(exchange);
+		{
+			try {
+				new ReplyWrapper(dc.handleSetOperation(exchange)).send(exchange);
+			}
+			catch (Exception e) {
+				new ErrorReply(e).send(exchange);
+			}
+		}
 	}
 	
 	private DeviceController getDeviceController(HttpServerExchange exchange) {

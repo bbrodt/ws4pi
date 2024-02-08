@@ -49,10 +49,6 @@ public class ErrorReply extends Reply {
 		this(-1, e.getMessage());
 		if (e.getMessage()==null)
 			this.message = e.getClass().getSimpleName();
-		else if (this.message==null)
-			this.message = e.getMessage();
-		else
-			this.message += "\n" + e.getMessage();
 		for (StackTraceElement st : e.getStackTrace()) {
 			stacktrace.add(st.toString());
 		}

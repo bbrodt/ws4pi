@@ -5,6 +5,207 @@
 	"description": "First attempt",
 	"macros": [
 		{
+			"name": "themeSong",
+			"description": "play 'Put on your Sunday clothes'",
+			"actions": [
+				{
+					"type": "sound",
+					"name": "PutOnYourSundayClothes.wav"
+				}
+			]
+		},
+		{
+			"name": "wave",
+			"description": "wave hello with right hand",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"targets": [
+						{
+							"position": 90,
+							"startSteps": 10,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Right Wrist",
+					"targets": [
+						{
+							"position": -100,
+							"startSteps": 0,
+							"stopSteps": 0,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"targets": [
+						{
+							"position": -80
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 60,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 10,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 60,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 10,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 60,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 10,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"position": 60,
+							"startSteps": 5,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"targets": [
+						{
+							"position": -60,
+							"startSteps": 10,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Right Wrist",
+					"targets": [
+						{
+							"position": -30,
+							"startSteps": 0,
+							"stopSteps": 0,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"targets": [
+						{
+							"position": -95,
+							"startSteps": 0,
+							"stopSteps": 0,
+							"stepDelay": 0
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "surprised",
 			"description": "surprised expression",
 			"actions": [
@@ -13,26 +214,92 @@
 					"name": "Left eyebrow",
 					"targets": [
 						{
-							"position": 80,
-							"startSteps": 1,
-							"stopSteps": 1,
-							"stepDelay": 1
+							"position": -50
 						}
-					],
-					"priority": 0
+					]
 				},
 				{
 					"type": "servo",
 					"name": "Right eyebrow",
 					"targets": [
 						{
-							"position": 80,
+							"position": -50
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Top",
+					"targets": [
+						{
+							"position": 20,
 							"startSteps": 1,
 							"stopSteps": 1,
-							"stepDelay": 1
+							"stepDelay": 0
 						}
-					],
-					"priority": 0
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Bottom",
+					"targets": [
+						{
+							"position": -50,
+							"startSteps": 1,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "sound",
+					"name": "Whoa.wav"
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left eyebrow",
+					"targets": [
+						{
+							"position": 100
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Right eyebrow",
+					"targets": [
+						{
+							"position": 100
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Top",
+					"targets": [
+						{
+							"position": -600,
+							"startSteps": 1,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Bottom",
+					"targets": [
+						{
+							"position": 0,
+							"startSteps": 1,
+							"stopSteps": 1,
+							"stepDelay": 0
+						}
+					]
 				}
 			]
 		}		

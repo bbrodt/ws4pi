@@ -3,6 +3,9 @@ out
 target/
 gen
 
+# directories
+sounds/
+
 # IntelliJ files
 .idea
 *.iml

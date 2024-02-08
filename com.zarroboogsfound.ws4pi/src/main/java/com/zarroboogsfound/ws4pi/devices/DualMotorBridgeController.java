@@ -48,9 +48,12 @@ public class DualMotorBridgeController extends DeviceController {
 	@Override
 	public void start(WS4PiConfig config) {
 		UltrasoundController controller = (UltrasoundController)config.getDeviceProvider().getDeviceController(DeviceType.ULTRASOUND);
-		final UltrasonicDistanceSensorComponent sensor = (UltrasonicDistanceSensorComponent)controller.getComponent(0);
-		sensor.setDetectionRange(5, 15);
-		sensor.setMeasurementTemperature(23);
+		final UltrasonicDistanceSensorComponent lookdownSensor = (UltrasonicDistanceSensorComponent)controller.getComponent(0);
+		final UltrasonicDistanceSensorComponent lookforwardSensor = (UltrasonicDistanceSensorComponent)controller.getComponent(1);
+		lookdownSensor.setDetectionRange(5, 15);
+		lookdownSensor.setMeasurementTemperature(23);
+		lookforwardSensor.setDetectionRange(5, 15);
+		lookforwardSensor.setMeasurementTemperature(10);
 		poller = new Thread() {
 
 			@Override
@@ -59,10 +62,12 @@ public class DualMotorBridgeController extends DeviceController {
 				boolean forcedStop = false;
 				while (true) {
 					try {
-						double d = sensor.measure();
+						double d1 = lookdownSensor.measure();
+						double d2 = lookforwardSensor.measure();
+						/*
 						if (d>15.0) {
 							for (int i=0; i<5; ++i) {
-								d = sensor.measure();
+								d = lookdownSensor.measure();
 								if (d<15.0)
 									i = 0;
 								Thread.sleep(100);
@@ -83,7 +88,8 @@ public class DualMotorBridgeController extends DeviceController {
 							}
 							sv = bridges[0].getSpeedVector();
 						}
-						sleep(100);
+						*/
+						sleep(1000);
 					}
 					catch (InterruptedException e) {
 						break;
@@ -95,7 +101,7 @@ public class DualMotorBridgeController extends DeviceController {
 			}
 			
 		};
-		poller.start();
+		//poller.start();
 		/*
 		sensor.onObjectFound(new Callable() {
 			@Override
@@ -143,6 +149,7 @@ public class DualMotorBridgeController extends DeviceController {
 		validate(id, direction, magnitude);
 		SpeedVector v = new SpeedVector(direction, magnitude);
 		bridges[id].setSpeedVector(v);
+		System.out.println("speed vector direction="+v.direction+" magnitude="+v.magnitude);
 		return v;
 	}
     

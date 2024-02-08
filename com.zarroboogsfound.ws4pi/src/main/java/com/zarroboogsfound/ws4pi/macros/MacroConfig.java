@@ -14,7 +14,7 @@ public class MacroConfig {
 	public String revision;
 	public String date;
 	public String description;
-	public List<Macro> macros = new ArrayList<Macro>();
+	public List<Macro> macros;
 	
 	private static MacroConfig instance;
 	
@@ -33,5 +33,13 @@ public class MacroConfig {
 		Gson gson = new GsonBuilder() .create();
 		instance = gson.fromJson(fr, MacroConfig.class);
 		return instance;
+	}
+	
+	public Macro get(String name) {
+		for (Macro m : macros) {
+			if (m.name.equalsIgnoreCase(name))
+				return m;
+		}
+		return null;
 	}
 }
