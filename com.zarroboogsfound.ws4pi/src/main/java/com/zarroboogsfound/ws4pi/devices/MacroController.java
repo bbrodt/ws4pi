@@ -20,9 +20,9 @@ import io.undertow.server.HttpServerExchange;
 
 public class MacroController extends DeviceController {
 
-	MacroConfig macroConfig;
-	MacroRunner macroRunner;
-	FileWatcher watcher;
+	private MacroConfig macroConfig;
+	private MacroRunner macroRunner;
+	private FileWatcher watcher;
 	
 	public MacroController() {
 		super(DeviceType.MACRO);

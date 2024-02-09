@@ -30,9 +30,8 @@ public class ServoController extends DeviceController {
     private PCA9685GpioProvider gpioProvider;
     private PCA9685GpioServoProvider gpioServoProvider;
     private Servo[] servos;
-    private Device[] devices;
+    private WS4PiConfig config;
     private Positioner positioners[];
-    private float currentPositions[];
 
     public ServoController() {
     	super(DeviceType.SERVO);
@@ -40,9 +39,9 @@ public class ServoController extends DeviceController {
     
     public void initialize(WS4PiConfig config) throws UnsupportedBusNumberException, IOException {
     	
-        devices = config.getDevices(DeviceType.SERVO);
+    	this.config = config;
+        Device[] devices = getDevices();
         servos = new Servo[devices.length];
-        currentPositions = new float[devices.length];
         positioners = new Positioner[devices.length];
         
         gpioProvider = createProvider();
@@ -58,6 +57,10 @@ public class ServoController extends DeviceController {
         }
     }
 
+    private Device[] getDevices() {
+    	return config.getDevices(DeviceType.SERVO);
+    }
+    
     public void setSpeed(int speed) {
     	
     }
@@ -66,11 +69,11 @@ public class ServoController extends DeviceController {
 	public void start(WS4PiConfig config) {
 		// move all servos to their start positions
         for (int channel=0; channel<servos.length; ++channel) {
-        	Device d = devices[channel];
+        	Device d = getDevices()[channel];
         	try {
         		System.out.println("Initializing channel "+channel);
 				setPosition(channel, d.limits.startPos);
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (DeviceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,7 +114,7 @@ public class ServoController extends DeviceController {
 	public void stop() {
 		// move all servos back to their start positions.
         for (int channel=0; channel<servos.length; ++channel) {
-        	Device d = devices[channel];
+        	Device d = getDevices()[channel];
         	try {
                 TargetPosition t[] = new TargetPosition[1];
                 t[0] = new TargetPosition();
@@ -133,7 +136,7 @@ public class ServoController extends DeviceController {
 	@Override
 	public void shutdown() {
         for (int channel=0; channel<servos.length; ++channel) {
-        	Device d = devices[channel];
+        	Device d = getDevices()[channel];
         	try {
         		System.out.println("Closing channel "+channel);
 				setPosition(channel, d.limits.startPos);
@@ -154,13 +157,19 @@ public class ServoController extends DeviceController {
     	setPosition(channel, pos, 0);
     }
     
-    public void setPosition(int channel, float pos, int stepDelay) throws DeviceException {
+    public void setPosition(int channel, float pos, float stepDelay) throws DeviceException {
     	pos = adjustPos(channel, pos);
         stopPositioner(channel);
         if (stepDelay==0)
-        	servos[channel].setPosition(currentPositions[channel] = pos);
+        	servos[channel].setPosition(pos);
         else {
-        	
+        	TargetPosition t[] = new TargetPosition[1];
+        	t[0] = new TargetPosition();
+        	t[0].position = pos;
+        	t[0].startSteps = 100;
+        	t[0].stopSteps = 100;
+        	t[0].stepDelay = stepDelay;
+        	setTargetPositions(channel,t);
         }
     }
     
@@ -179,11 +188,13 @@ public class ServoController extends DeviceController {
     
     private float adjustPos(int channel, float pos) throws DeviceException {
     	super.validate(channel);
-    	Device d = devices[channel];
-        if (pos < d.limits.minPos) {
+    	Device d = getDevices()[channel];
+    	if (pos>=999)
+    		pos = d.limits.startPos;
+    	else if (pos < d.limits.minPos) {
         	pos = d.limits.minPos;
         }
-        if (pos > d.limits.maxPos)
+    	else if (pos > d.limits.maxPos)
         	pos = d.limits.maxPos;
         return pos;
     }
@@ -218,7 +229,7 @@ public class ServoController extends DeviceController {
         	try {
 	        	for (TargetPosition t : targets) {
 		        	endPosition = adjustPos(channel,t.position);
-		        	currentPosition = currentPositions[channel];
+		        	currentPosition = servos[channel].getPosition();
 		        	float distance  = (int)Math.abs(endPosition - currentPosition);
 		    		startSteps = t.startSteps;
 		    		stopSteps = t.stopSteps;
@@ -243,21 +254,20 @@ public class ServoController extends DeviceController {
 		                	else
 		                		++currentPosition;
 		                    servos[channel].setPosition(currentPosition);
-				            currentPositions[channel] = currentPosition;
 		            	}
 		            	catch (Exception e) {
 		            		throw new InterruptedException();
 		            	}
 	                    if (startSteps>0) {
-	                    	Thread.sleep((long) (startSteps*startSteps*t.stepDelay));
+	                    	Thread.sleep((long) (startSteps*t.stepDelay));
 	                    	--startSteps;
 	                    }
 	                    else if (middleSteps>0) {
-	                    	Thread.sleep(3);
+	                    	Thread.sleep(10);
 	                    	--middleSteps;
 	                    }
 	                    else if (stopSteps>0) {
-	                    	Thread.sleep((long) (stopSteps*stopSteps*t.stepDelay));
+	                    	Thread.sleep((long) (stopSteps*t.stepDelay));
 	                    	--stopSteps;
 	                    	
 	                    }

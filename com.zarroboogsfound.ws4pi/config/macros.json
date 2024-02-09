@@ -156,7 +156,7 @@
 					"name": "Right Arm",
 					"targets": [
 						{
-							"position": 60,
+							"position": 999,
 							"startSteps": 5,
 							"stopSteps": 1,
 							"stepDelay": 0
@@ -172,7 +172,7 @@
 					"name": "Right Shoulder",
 					"targets": [
 						{
-							"position": -60,
+							"position": 999,
 							"startSteps": 10,
 							"stopSteps": 1,
 							"stepDelay": 0
@@ -229,25 +229,21 @@
 				},
 				{
 					"type": "servo",
-					"name": "Neck Top",
+					"name": "Neck Bottom",
 					"targets": [
 						{
-							"position": 20,
-							"startSteps": 1,
-							"stopSteps": 1,
-							"stepDelay": 0
+							"position": -50,
+							"stepDelay": 0.5
 						}
 					]
 				},
 				{
 					"type": "servo",
-					"name": "Neck Bottom",
+					"name": "Neck Top",
 					"targets": [
 						{
-							"position": -50,
-							"startSteps": 1,
-							"stopSteps": 1,
-							"stepDelay": 0
+							"position": 20,
+							"stepDelay": 0.5
 						}
 					]
 				},
@@ -279,29 +275,75 @@
 				},
 				{
 					"type": "servo",
-					"name": "Neck Top",
+					"name": "Neck Bottom",
 					"targets": [
 						{
-							"position": -600,
-							"startSteps": 1,
-							"stopSteps": 1,
-							"stepDelay": 0
+							"position": 0,
+							"stepDelay": 0.5
 						}
 					]
 				},
 				{
 					"type": "servo",
-					"name": "Neck Bottom",
+					"name": "Neck Top",
 					"targets": [
 						{
-							"position": 0,
-							"startSteps": 1,
-							"stopSteps": 1,
-							"stepDelay": 0
+							"position": -60,
+							"stepDelay": 0.5
 						}
 					]
 				}
 			]
-		}		
+		},
+		{
+			"name": "softServoTest",
+			"description": "macro to test operation of slow servo code",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"targets": [
+						{
+							"position": 100,
+							"startSteps": 100,
+							"stopSteps": 100,
+							"stepDelay": 0.25
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"targets": [
+						{
+							"position": -100,
+							"startSteps": 100,
+							"stopSteps": 100,
+							"stepDelay": 0.25
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"targets": [
+						{
+							"position": 100,
+							"startSteps": 100,
+							"stopSteps": 100,
+							"stepDelay": 0.25
+						}
+					]
+				}
+			]
+		}				
 	]
 }

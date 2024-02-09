@@ -1,6 +1,7 @@
 package com.zarroboogsfound.ws4pi;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -13,14 +14,18 @@ import com.google.gson.GsonBuilder;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPin;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioProvider;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+import com.zarroboogsfound.ws4pi.WS4PiConfig.Device.PinDefinition;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
 import com.zarroboogsfound.ws4pi.devices.DeviceControllerProvider;
+import com.zarroboogsfound.ws4pi.file.FileEvent;
+import com.zarroboogsfound.ws4pi.file.FileEventAdapter;
+import com.zarroboogsfound.ws4pi.file.FileWatcher;
+
 
 public class WS4PiConfig {
 	private String httpServerName;
@@ -34,6 +39,7 @@ public class WS4PiConfig {
 	private List<Device> devices;
 
     private final GpioController gpio = GpioFactory.getInstance();
+	private static FileWatcher watcher;
     
     private static WS4PiConfig instance;
 
@@ -77,18 +83,78 @@ public class WS4PiConfig {
 	private WS4PiConfig() {
 		instance = this;
 	}
-	
+
 	public static WS4PiConfig getInstance() {
 		if (instance==null)
 			instance = new WS4PiConfig();
 		return instance;
 	}
 	
-	public static WS4PiConfig load(String filename) throws FileNotFoundException {
-		FileReader fr = new FileReader(filename);
-		Gson gson = new GsonBuilder() .create();
+	public static WS4PiConfig load(String path) throws FileNotFoundException {
+		if (instance!=null && instance.guid!=null) {
+			throw new ExceptionInInitializerError("Cannot load configuration file - use reload() instead");
+		}
+		watcher = new FileWatcher( new File("config") );
+		watcher.addListener(new FileEventAdapter() {
+			public void onModified(FileEvent event) {
+				String filename = new File(path).getName();
+				System.out.println("Config folder change event: "+event.getFile().getName());
+				
+				if (event.getFile().getName().equalsIgnoreCase(filename)) {
+					try {
+						WS4PiConfig.reload(path);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExceptionInInitializerError e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		watcher.watch();
+
+		FileReader fr = new FileReader(path);
+		Gson gson = new GsonBuilder().create();
 		instance = gson.fromJson(fr, WS4PiConfig.class);
 		return instance;
+	}
+	
+	public static WS4PiConfig reload(String path) throws FileNotFoundException, ExceptionInInitializerError {
+		WS4PiConfig saveInstance = instance;
+		FileReader fr = new FileReader(path);
+		Gson gson = new GsonBuilder() .create();
+		WS4PiConfig newInstance = gson.fromJson(fr, WS4PiConfig.class);
+		instance = saveInstance;
+		
+		boolean pass = true;
+		if (newInstance.devices.size() != instance.devices.size())
+			pass = false;
+		else {
+			for (int d=0; d<newInstance.devices.size(); ++d) {
+				Device nd = newInstance.devices.get(d);
+				Device od = instance.devices.get(d);
+				if (nd.id != od.id || !nd.type.equals(od.type)) {
+					pass = false;
+					break;
+				}
+			}
+		}
+		if (pass) {
+			Copy(newInstance, instance);
+			return instance;
+		}
+		throw new ExceptionInInitializerError("Cannot reload configuration file - restart needed");
+	}
+	
+	private static void Copy(WS4PiConfig src, WS4PiConfig dst) {
+		for (int d=0; d<src.devices.size(); ++d) {
+			Device sd = src.devices.get(d);
+			Device dd = dst.devices.get(d);
+			dd.lags = sd.lags;
+			dd.limits = sd.limits;
+		}
 	}
 	
 	public GpioPin[] getGpioPins(DeviceType deviceType) {

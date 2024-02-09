@@ -107,11 +107,11 @@ public class MacroRunner {
 					case MOTOR_BRIDGE:
 						break;
 					case SERVO:
-						System.out.println("SERVO "+a.name);
+						System.out.println(System.currentTimeMillis()+" SERVO "+a.name);
 						ServoController servoCtl = (ServoController)controller;
 						Device d = config.getDevice(DeviceType.SERVO, a.name);
 						if (a.targets.size()==1 && a.targets.get(0).startSteps==0 && a.targets.get(0).stopSteps==0 )
-							servoCtl.setPosition(d.id, a.targets.get(0).position );
+							servoCtl.setPosition(d.id, a.targets.get(0).position, a.targets.get(0).stepDelay );
 						else
 							servoCtl.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
 						break;
@@ -237,11 +237,13 @@ public class MacroRunner {
 	}
 	
 	private boolean canRunMacro(Macro m) {
-		for (MacroRunnable mr : activeRunnables) {
-			for (Action mra : mr.getMacro().actions) {
-				for (Action ma : m.actions ) {
-					if (mra.type == ma.type && mra.name.equals(ma.name)) {
-						return false;
+		if (activeRunnables!=null) {
+			for (MacroRunnable mr : activeRunnables) {
+				for (Action mra : mr.getMacro().actions) {
+					for (Action ma : m.actions ) {
+						if (mra.type == ma.type && mra.name.equals(ma.name)) {
+							return false;
+						}
 					}
 				}
 			}
@@ -250,25 +252,31 @@ public class MacroRunner {
 	}
 	
 	private void enqueueMacro(Macro m) {
+		if (macroQueue==null)
+			return;
 		macroQueue.add(m);
 	}
 	
 	private Macro peekMacro() {
+		if (macroQueue==null)
+			return null;
 		return macroQueue.peek();
 	}
 	
 	private Macro dequeueMacro() {
+		if (macroQueue==null)
+			return null;
 		return macroQueue.poll();
 	}
 	
 	private synchronized void activateRunnable(MacroRunnable mr) {
-		if (mr!=null) {
+		if (mr!=null && activeRunnables!=null) {
 			activeRunnables.add(mr);
 		}
 	}
 	
 	private synchronized void deactivateRunnable(MacroRunnable mr) {
-		if (mr!=null) {
+		if (mr!=null && activeRunnables!=null) {
 			activeRunnables.remove(mr);
 		}
 	}

@@ -183,8 +183,8 @@
 			"id": 0,
 			"limits": {
 				"reversed": "true",
-				"startPos": -60,
-				"minPos": -60,
+				"startPos": -90,
+				"minPos": -90,
 				"maxPos": 90,
 				"maxTorque": 25,
 				"speed": 300
@@ -202,9 +202,9 @@
 			"id": 1,
 			"limits": {
 				"reversed": "true",
-				"startPos": 50,
-				"minPos": -60,
-				"maxPos": 60,
+				"startPos": 70,
+				"minPos": -70,
+				"maxPos": 80,
 				"maxTorque": 25,
 				"speed": 300
 			},

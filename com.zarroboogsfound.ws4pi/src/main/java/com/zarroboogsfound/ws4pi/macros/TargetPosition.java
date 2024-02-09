@@ -3,7 +3,7 @@ package com.zarroboogsfound.ws4pi.macros;
 public class TargetPosition {
 	
 	public TargetPosition() {
-		startSteps = stopSteps = stepDelay = 1;
+		startSteps = stopSteps = stepDelay = 0;
 	}
 	
 	public float direction; // for MOTOR_BRIDGE this is the SpeedVector direction
