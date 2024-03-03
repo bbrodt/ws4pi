@@ -73,7 +73,7 @@ public class ServoController extends DeviceController {
         	try {
         		System.out.println("Initializing channel "+channel);
 				setPosition(channel, d.limits.startPos);
-				Thread.sleep(200);
+				Thread.sleep(500);
 			} catch (DeviceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -44,7 +44,7 @@ public class SoundController extends DeviceController {
 	
 	public void play(String filepath) {
 		try {
-			Runtime.getRuntime().exec("aplay "+filepath);
+			Runtime.getRuntime().exec("mplayer "+filepath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

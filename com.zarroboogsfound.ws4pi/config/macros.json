@@ -296,20 +296,151 @@
 			]
 		},
 		{
+			"name": "self-test",
+			"description": "warmup exercises",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 15
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 15
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 90
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 90
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 15
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 15
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 90
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 90
+				},
+				{
+					"type": "delay",
+					"value": 500.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 15
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 15
+				}
+			]
+		},
+		{
+			"name": "big-hug",
+			"description": "big hug",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Left Shoulder",
+					"value": -50
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"value": -70
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": -50
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"value": -570
+				},
+				{
+					"type": "sound",
+					"name": "eve.wav"
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Shoulder",
+					"value": -999
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"value": 999
+				}
+			]
+		},
+		{
 			"name": "softServoTest",
 			"description": "macro to test operation of slow servo code",
 			"actions": [
 				{
 					"type": "servo",
-					"name": "Left Arm",
-					"targets": [
-						{
-							"position": 100,
-							"startSteps": 100,
-							"stopSteps": 100,
-							"stepDelay": 0.25
-						}
-					]
+					"name": "Left Shoulder",
+					"value": -100
 				},
 				{
 					"type": "delay",
@@ -317,15 +448,8 @@
 				},
 				{
 					"type": "servo",
-					"name": "Left Arm",
-					"targets": [
-						{
-							"position": -100,
-							"startSteps": 100,
-							"stopSteps": 100,
-							"stepDelay": 0.25
-						}
-					]
+					"name": "Left Shoulder",
+					"value": 100
 				},
 				{
 					"type": "delay",
@@ -333,17 +457,76 @@
 				},
 				{
 					"type": "servo",
-					"name": "Left Arm",
-					"targets": [
-						{
-							"position": 100,
-							"startSteps": 100,
-							"stopSteps": 100,
-							"stepDelay": 0.25
-						}
-					]
+					"name": "Left Shoulder",
+					"value": -100
 				}
 			]
-		}				
+		},
+		{
+			"name": "touchdown-run-pose",
+			"description": "getting ready for the big touchdown",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Left Shoulder",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"value": 999
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": 90
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"value": 0
+				}
+			]
+		},
+		{
+			"name": "touchdown-dance",
+			"description": "touchdown spike and dance",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Left Shoulder",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": 999
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"value": 999
+				}
+			]
+		}
 	]
 }

@@ -6,86 +6,6 @@
 	"guid": "1e7fdd42-38ed-467e-bab5-d7f4eb946ccb",
 	"devices": [
 		{
-			"type": "stepper",
-			"name": "Right Arm",
-			"id" : 0,
-			"pins": [
-				{
-					"name": "IN1",
-					"provision": "digital output low",
-					"address": 21
-				},
-				{
-					"name": "IN2",
-					"provision": "digital output low",
-					"address": 22
-				},
-				{
-					"name": "IN3",
-					"provision": "digital output low",
-					"address": 23
-				},
-				{
-					"name": "IN4",
-					"provision": "digital output low",
-					"address": 24
-				}
-			]
-		},
-		{
-			"type": "stepper",
-			"name": "Left Arm",
-			"id" : 1,
-			"pins": [
-				{
-					"name": "IN1",
-					"provision": "digital output low",
-					"address": 26
-				},
-				{
-					"name": "IN2",
-					"provision": "digital output low",
-					"address": 27
-				},
-				{
-					"name": "IN3",
-					"provision": "digital output low",
-					"address": 28
-				},
-				{
-					"name": "IN4",
-					"provision": "digital output low",
-					"address": 29
-				}
-			]
-		},
-
-		{
-			"type": "switch",
-			"name": "Right Arm Limit Switch",
-			"id": 0,
-			"pins": [
-				{
-					"name": "IN",
-					"provision": "digital input pullup",
-					"address" : 25
-				}
-			]
-		},
-		{
-			"type": "switch",
-			"name": "Left Arm Limit Switch",
-			"id": 1,
-			"pins": [
-				{
-					"name": "IN",
-					"provision": "digital input pullup",
-					"address" : 31
-				}
-			]
-		},
-		
-		{
 			"type": "motor_bridge",
 			"name": "Right Track Motor",
 			"id": 0,
@@ -171,7 +91,7 @@
 				{
 					"name": "OUT",
 					"provision": "digital output low",
-					"address": 14
+					"address": 21
 				}
 			]
 		},
@@ -421,7 +341,7 @@
 			"name": "Left Eye",
 			"id": 13,
 			"limits": {
-				"startPos": 10,
+				"startPos": 90,
 				"minPos": -60,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -459,7 +379,7 @@
 			"id": 15,
 			"limits": {
 				"reversed": "true",
-				"startPos": 10,
+				"startPos": 90,
 				"minPos": -60,
 				"maxPos": 70,
 				"maxTorque": 25,

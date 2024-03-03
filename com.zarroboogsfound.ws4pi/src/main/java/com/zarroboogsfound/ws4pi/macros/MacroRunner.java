@@ -110,10 +110,15 @@ public class MacroRunner {
 						System.out.println(System.currentTimeMillis()+" SERVO "+a.name);
 						ServoController servoCtl = (ServoController)controller;
 						Device d = config.getDevice(DeviceType.SERVO, a.name);
-						if (a.targets.size()==1 && a.targets.get(0).startSteps==0 && a.targets.get(0).stopSteps==0 )
-							servoCtl.setPosition(d.id, a.targets.get(0).position, a.targets.get(0).stepDelay );
-						else
-							servoCtl.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
+						if (a.targets.size()>0) {
+							if (a.targets.size()==1 && a.targets.get(0).startSteps==0 && a.targets.get(0).stopSteps==0 )
+								servoCtl.setPosition(d.id, a.targets.get(0).position, a.targets.get(0).stepDelay );
+							else
+								servoCtl.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
+						}
+						else {
+							servoCtl.setPosition(d.id, (float)a.value, 0.1f );
+						}
 						break;
 					case STEPPER:
 						break;
@@ -122,7 +127,7 @@ public class MacroRunner {
 					case ULTRASOUND:
 						break;
 					case DELAY:
-						System.out.println("DELAY "+a.value);
+						System.out.println(System.currentTimeMillis()+" DELAY "+a.value);
 						Thread.sleep((long)a.value);
 						break;
 					case LED:
@@ -130,7 +135,7 @@ public class MacroRunner {
 					case NULL_DEVICE:
 						break;
 					case SOUND:
-						System.out.println("SOUND "+a.name);
+						System.out.println(System.currentTimeMillis()+" SOUND "+a.name);
 						SoundController soundCtl = (SoundController)controller;
 						soundCtl.play("sounds/" + a.name);
 						break;
