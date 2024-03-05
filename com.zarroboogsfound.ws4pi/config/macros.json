@@ -229,20 +229,10 @@
 				},
 				{
 					"type": "servo",
-					"name": "Neck Bottom",
-					"targets": [
-						{
-							"position": -50,
-							"stepDelay": 0.5
-						}
-					]
-				},
-				{
-					"type": "servo",
 					"name": "Neck Top",
 					"targets": [
 						{
-							"position": 20,
+							"position": -100,
 							"stepDelay": 0.5
 						}
 					]
@@ -270,16 +260,6 @@
 					"targets": [
 						{
 							"position": 100
-						}
-					]
-				},
-				{
-					"type": "servo",
-					"name": "Neck Bottom",
-					"targets": [
-						{
-							"position": 0,
-							"stepDelay": 0.5
 						}
 					]
 				},

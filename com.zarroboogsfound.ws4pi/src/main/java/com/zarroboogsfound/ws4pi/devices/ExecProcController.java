@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Optional;
 
 import com.pi4j.component.Component;
 import com.zarroboogsfound.ws4pi.DeviceType;
@@ -11,10 +12,10 @@ import com.zarroboogsfound.ws4pi.WS4PiConfig;
 
 import io.undertow.server.HttpServerExchange;
 
-public class SoundController extends DeviceController {
+public class ExecProcController extends DeviceController {
 
-	public SoundController() {
-		super(DeviceType.SOUND);
+	public ExecProcController() {
+		super(DeviceType.EXECPROC);
 	}
 
 	@Override
@@ -37,21 +38,33 @@ public class SoundController extends DeviceController {
 
 	@Override
 	public void start(WS4PiConfig config) {
-		play("sounds/startup.wav");
 	}
 	
 	@Override
 	public void stop() {
-		play("sounds/shutdown.wav");
 	}
 	
-	public void play(final String filepath) {
-		Thread t = new Thread ( ) {
-
+	public Process exec(String cmd) {
+		class ExecProcThread extends Thread {
+			private Process proc;
+			private String cmdLine;
+			
+			ExecProcThread(String cmd) {
+				this.cmdLine = cmd;
+			}
+			
+			public Process exec() {
+				try {
+					proc = Runtime.getRuntime().exec(cmdLine);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return proc;
+			}
+			
 			@Override
 			public void run() {
 				try {
-					Process proc = Runtime.getRuntime().exec(new String[] {"aplay",filepath} );
 		            InputStream stderr = proc.getErrorStream();
 		            InputStreamReader isr = new InputStreamReader(stderr);
 		            BufferedReader br = new BufferedReader(isr);
@@ -66,12 +79,26 @@ public class SoundController extends DeviceController {
 					t.printStackTrace();
 				}
 			}
-			
-		};
+		}
+		
+		ExecProcThread t = new ExecProcThread(cmd);
+		Process p = t.exec();
 		t.start();
+		return p;
 	}
 
+	public void kill(int pid) {
+		Optional<ProcessHandle> h = ProcessHandle.of(pid);
+		if (h.isPresent()) {
+			h.get().destroy();
+		}
+	}
+	
 	public boolean isBusy(int id) {
+		Optional<ProcessHandle> h = ProcessHandle.of(id);
+		if (h.isPresent()) {
+			return h.get().isAlive();
+		}
 		return false;
 	}
 
