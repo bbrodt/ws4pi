@@ -6,9 +6,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+import org.wildfly.common.annotation.NotNull;
+
 import com.pi4j.component.Component;
 import com.zarroboogsfound.ws4pi.DeviceType;
 import com.zarroboogsfound.ws4pi.WS4PiConfig;
+import com.zarroboogsfound.ws4pi.data.QueryParams;
 
 import io.undertow.server.HttpServerExchange;
 
@@ -20,13 +23,25 @@ public class ExecProcController extends DeviceController {
 
 	@Override
 	public Object handleGetOperation(HttpServerExchange exchange) throws DeviceException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Integer> pidParam = QueryParams.getInt(exchange, "pid");
+		if (pidParam.isPresent())
+			return isBusy(pidParam.get().intValue());
+		return 0;
 	}
 
 	@Override
 	public Object handleSetOperation(HttpServerExchange exchange) throws DeviceException {
-		// TODO Auto-generated method stub
+		Optional<String> cmdParam = QueryParams.get(exchange, "cmd");
+		Optional<Integer> killParam = QueryParams.getInt(exchange, "kill");
+		
+		if (cmdParam.isPresent()) {
+			Process proc = exec(cmdParam.get());
+			if (proc!=null)
+				return proc.pid();
+		}
+		else if (killParam.isPresent()){
+			return kill(killParam.get());
+		}
 		return null;
 	}
 
@@ -87,11 +102,13 @@ public class ExecProcController extends DeviceController {
 		return p;
 	}
 
-	public void kill(int pid) {
+	public int kill(int pid) {
 		Optional<ProcessHandle> h = ProcessHandle.of(pid);
 		if (h.isPresent()) {
 			h.get().destroy();
+			return pid;
 		}
+		return 0;
 	}
 	
 	public boolean isBusy(int id) {
