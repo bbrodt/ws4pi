@@ -13,17 +13,17 @@
 				{
 					"name": "IN1",
 					"provision": "digital output low",
-					"address": 4
+					"address": 23
 				},
 				{
 					"name": "IN2",
 					"provision": "digital output low",
-					"address": 5
+					"address": 24
 				},
 				{
 					"name": "ENA",
 					"provision": "digital softpwm low",
-					"address": 6
+					"address": 25
 				}
 			]
 		},
@@ -35,17 +35,17 @@
 				{
 					"name": "IN3",
 					"provision": "digital output low",
-					"address": 16
+					"address": 15
 				},
 				{
 					"name": "IN4",
 					"provision": "digital output low",
-					"address": 15
+					"address": 14
 				},
 				{
 					"name": "ENB",
 					"provision": "digital softpwm low",
-					"address": 0
+					"address": 17
 				}
 			]
 		},
@@ -57,12 +57,12 @@
 				{
 					"name": "TRIG",
 					"provision": "digital output low",
-					"address": 2
+					"address": 27
 				},
 				{
 					"name": "ECHO",
 					"provision": "digital input pulldown",
-					"address": 3
+					"address": 22
 				}
 			]
 		},
@@ -74,7 +74,7 @@
 				{
 					"name": "TRIG",
 					"provision": "digital output low",
-					"address": 12
+					"address": 6
 				},
 				{
 					"name": "ECHO",
@@ -91,7 +91,7 @@
 				{
 					"name": "OUT",
 					"provision": "digital output low",
-					"address": 21
+					"address": 5
 				}
 			]
 		},
