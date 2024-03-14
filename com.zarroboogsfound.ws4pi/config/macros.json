@@ -5,6 +5,114 @@
 	"description": "First attempt",
 	"macros": [
 		{
+			"name": "kitty toy",
+			"description": "turn on laser and move head to let kitty chase the red dot",
+			"actions": [
+				{
+					"type": "led",
+					"name": "Head-Mounted Laser",
+					"value": "1"
+				},
+				{
+					"type": "loop",
+					"value": 5,
+					"actions": [
+						{
+							"type": "servo",
+							"name": "Neck Top",
+							"value": "0"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						},
+						{
+							"type": "servo",
+							"name": "Head Turn",
+							"value": "20"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						},
+						{
+							"type": "servo",
+							"name": "Neck Top",
+							"value": "-30"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						},
+						{
+							"type": "servo",
+							"name": "Head Turn",
+							"value": "-20"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						},
+						{
+							"type": "servo",
+							"name": "Neck Top",
+							"value": "0"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						},
+						{
+							"type": "servo",
+							"name": "Head Turn",
+							"value": "0"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						},
+						{
+							"type": "servo",
+							"name": "Neck Top",
+							"value": "-80"
+						},
+						{
+							"type": "delay",
+							"value": 500.0
+						}
+					]
+				},
+				{
+					"type": "led",
+					"name": "Head-Mounted Laser",
+					"value": "0"
+				}
+			]
+		},
+		{
+			"name": "move forward",
+			"description": "turn on both track motors for 5 seconds",
+			"actions": [
+				{
+					"type": "motor_bridge",
+					"name": "Tracks",
+					"value": "1.0",
+					"direction": "0.0"
+					
+				},
+				{
+					"type": "delay",
+					"value": 5000.0
+				},
+				{
+					"type": "motor_bridge",
+					"name": "Tracks",
+					"value": "0.0",
+					"direction": "0.0"
+				}
+			]
+		},
+		{
 			"name": "themeSong",
 			"description": "play 'Put on your Sunday clothes'",
 			"actions": [

@@ -11,5 +11,6 @@ public enum DeviceType {
 	SOUND, // plays a sound from the ./sound folder
 	DELAY, // special time delay device type used for pauses in macro execution
 	EXECPROC, // executes a specified process in background
+	LOOP, // pseudo device type to allow macro loops
 	NULL_DEVICE
 }

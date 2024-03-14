@@ -11,6 +11,8 @@ import com.zarroboogsfound.ws4pi.DeviceType;
 import com.zarroboogsfound.ws4pi.WS4PiConfig;
 import com.zarroboogsfound.ws4pi.WS4PiConfig.Device;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
+import com.zarroboogsfound.ws4pi.devices.DualMotorBridgeController;
+import com.zarroboogsfound.ws4pi.devices.LEDController;
 import com.zarroboogsfound.ws4pi.devices.ServoController;
 import com.zarroboogsfound.ws4pi.devices.SoundController;
 
@@ -105,6 +107,10 @@ public class MacroRunner {
 					case MACRO:
 						break;
 					case MOTOR_BRIDGE:
+						System.out.println(System.currentTimeMillis()+" MOTOR_BRIDGE "+a.name);
+						DualMotorBridgeController motorCtl = (DualMotorBridgeController)controller;
+						// FIX ME: currently only 1 motor bridge is supported, id=0
+						motorCtl.setSpeedVector(0, a.direction, a.value);
 						break;
 					case SERVO:
 						System.out.println(System.currentTimeMillis()+" SERVO "+a.name);
@@ -117,7 +123,7 @@ public class MacroRunner {
 								servoCtl.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
 						}
 						else {
-							servoCtl.setPosition(d.id, (float)a.value, 0.1f );
+							servoCtl.setPosition(d.id, (float)a.value, 0.5f );
 						}
 						break;
 					case STEPPER:
@@ -131,6 +137,12 @@ public class MacroRunner {
 						Thread.sleep((long)a.value);
 						break;
 					case LED:
+						// FIX ME: currently only 1 LED is supported, id=0
+						LEDController ledCtl = (LEDController)controller;
+						if (a.value!=0)
+							ledCtl.on(0);
+						else
+							ledCtl.off(0);
 						break;
 					case NULL_DEVICE:
 						break;
@@ -138,6 +150,11 @@ public class MacroRunner {
 						System.out.println(System.currentTimeMillis()+" SOUND "+a.name);
 						SoundController soundCtl = (SoundController)controller;
 						soundCtl.play("sounds/" + a.name);
+						break;
+					case LOOP:
+						for (int loopcount=0; loopcount<a.value; ++loopcount) {
+							runActions(a.actions);
+						}
 						break;
 					default:
 						break;

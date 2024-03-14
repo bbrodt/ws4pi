@@ -1,6 +1,5 @@
 package com.zarroboogsfound.ws4pi.devices;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
 
 import com.pi4j.component.Component;
@@ -125,13 +124,14 @@ public class DualMotorBridgeController extends DeviceController {
 		if (poller!=null && poller.isAlive()) {
 			poller.interrupt();
 			poller = null;
-			bridges[0].setSpeedVector(new SpeedVector(0,0));
+			for (int id=0; id<bridges.length; ++id)
+				bridges[id].setSpeedVector(new SpeedVector(0,0));
 		}
 	}
 	
 	public boolean isBusy(int id) {
-		return bridges[0].getState(0) == MotorState.STOP &&
-				bridges[0].getState(1) == MotorState.STOP;
+		return bridges[id].getState(0) == MotorState.STOP &&
+				bridges[id].getState(1) == MotorState.STOP;
 	}
 	
 	@Override
@@ -146,13 +146,16 @@ public class DualMotorBridgeController extends DeviceController {
 		int id = QueryParams.getInt(exchange, "id").get().intValue();
 		float direction = QueryParams.getFloat(exchange, "direction").get().floatValue();
 		float magnitude = QueryParams.getFloat(exchange, "magnitude").get().floatValue();
+		return setSpeedVector(id, direction, magnitude);
+	}
+    
+	public SpeedVector setSpeedVector(int id, float direction, float magnitude) throws DeviceException {
 		validate(id, direction, magnitude);
 		SpeedVector v = new SpeedVector(direction, magnitude);
 		bridges[id].setSpeedVector(v);
-		System.out.println("speed vector direction="+v.direction+" magnitude="+v.magnitude);
 		return v;
 	}
-    
+	
     private void validate(int id, float direction, float magnitude) throws DeviceException {
     	super.validate(id);
         if (direction<0 || direction>360)
