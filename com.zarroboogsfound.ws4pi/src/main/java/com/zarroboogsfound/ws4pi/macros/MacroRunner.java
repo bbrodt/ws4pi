@@ -105,6 +105,8 @@ public class MacroRunner {
 
 					switch (type) {
 					case MACRO:
+						System.out.println(System.currentTimeMillis()+" MACRO "+a.name);
+						MacroRunner.getInstance().run(a.name);
 						break;
 					case MOTOR_BRIDGE:
 						System.out.println(System.currentTimeMillis()+" MOTOR_BRIDGE "+a.name);
@@ -113,17 +115,29 @@ public class MacroRunner {
 						motorCtl.setSpeedVector(0, a.direction, a.value);
 						break;
 					case SERVO:
-						System.out.println(System.currentTimeMillis()+" SERVO "+a.name);
 						ServoController servoCtl = (ServoController)controller;
 						Device d = config.getDevice(DeviceType.SERVO, a.name);
 						if (a.targets.size()>0) {
-							if (a.targets.size()==1 && a.targets.get(0).startSteps==0 && a.targets.get(0).stopSteps==0 )
+							for (TargetPosition t : a.targets) {
+								if ("startPos".equals(t.limitPos))
+									t.position = d.limits.startPos;
+								if ("minPos".equals(t.limitPos))
+									t.position = d.limits.minPos;
+								if ("maxPos".equals(t.limitPos))
+									t.position = d.limits.maxPos;
+							}
+							if (a.targets.size()==1 && a.targets.get(0).startSteps==0 && a.targets.get(0).stopSteps==0 ) {
+								System.out.println(System.currentTimeMillis()+" SERVO "+a.name+" position="+a.targets.get(0).position+" delay="+a.targets.get(0).stepDelay);
 								servoCtl.setPosition(d.id, a.targets.get(0).position, a.targets.get(0).stepDelay );
-							else
+							}
+							else {
+								System.out.println(System.currentTimeMillis()+" SERVO "+a.name+" targets");
 								servoCtl.setTargetPositions(d.id, a.targets.toArray(new TargetPosition[a.targets.size()]));
+							}
 						}
 						else {
-							servoCtl.setPosition(d.id, (float)a.value, 0.5f );
+							System.out.println(System.currentTimeMillis()+" SERVO "+a.name+" position="+a.value);
+							servoCtl.setPosition(d.id, (float)a.value, 0.1f );
 						}
 						break;
 					case STEPPER:

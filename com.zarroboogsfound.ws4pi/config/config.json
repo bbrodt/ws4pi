@@ -269,7 +269,7 @@
 			"name": "Neck Top",
 			"id": 9,
 			"limits": {
-				"startPos": -75,
+				"startPos": -100,
 				"minPos": -100,
 				"maxPos": 70,
 				"maxTorque": 25,
@@ -341,7 +341,7 @@
 			"name": "Left Eye",
 			"id": 13,
 			"limits": {
-				"startPos": 90,
+				"startPos": 0,
 				"minPos": -60,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -379,7 +379,7 @@
 			"id": 15,
 			"limits": {
 				"reversed": "true",
-				"startPos": 90,
+				"startPos": 0,
 				"minPos": -60,
 				"maxPos": 70,
 				"maxTorque": 25,

@@ -51,7 +51,7 @@ public class SoundController extends DeviceController {
 			@Override
 			public void run() {
 				try {
-					Process proc = Runtime.getRuntime().exec(new String[] {"aplay",filepath} );
+					Process proc = Runtime.getRuntime().exec(new String[] {"mplayer",filepath} );
 		            InputStream stderr = proc.getErrorStream();
 		            InputStreamReader isr = new InputStreamReader(stderr);
 		            BufferedReader br = new BufferedReader(isr);

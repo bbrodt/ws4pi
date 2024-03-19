@@ -16,6 +16,7 @@ public class Action {
 	// device type; one of the DeviceType enum string values
 	public String type;
 	// Action name: for SOUND this is the audio file name,
+	// for SERVO this is the servo name string (not channel number!)
 	// FIX ME: for MOTOR_BRIDGE this is the DualMotorBridge device name
 	// for all other device types this is for descriptive purposes only
 	public String name;

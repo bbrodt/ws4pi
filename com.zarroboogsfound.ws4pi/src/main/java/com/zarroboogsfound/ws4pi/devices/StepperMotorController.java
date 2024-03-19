@@ -1,6 +1,7 @@
 package com.zarroboogsfound.ws4pi.devices;
 
 import com.pi4j.component.Component;
+import com.pi4j.component.light.impl.GpioLEDComponent;
 import com.pi4j.component.motor.MotorState;
 import com.pi4j.component.motor.impl.GpioStepperMotorComponent;
 import com.pi4j.component.switches.impl.GpioSwitchComponent;
@@ -11,12 +12,14 @@ import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinState;
 import com.zarroboogsfound.ws4pi.DeviceType;
 import com.zarroboogsfound.ws4pi.WS4PiConfig;
+import com.zarroboogsfound.ws4pi.WS4PiConfig.Device;
 import com.zarroboogsfound.ws4pi.data.QueryParams;
 
 import io.undertow.server.HttpServerExchange;
 
 public class StepperMotorController extends DeviceController {
     final GpioController gpio = GpioFactory.getInstance();
+    private WS4PiConfig config;
 
     // create byte array to demonstrate a single-step sequencing
     // (This is the most basic method, turning on a single electromagnet every time.
@@ -71,8 +74,19 @@ public class StepperMotorController extends DeviceController {
 		super(DeviceType.STEPPER);
 	}
 
+    private Device[] getDevices() {
+    	return config.getDevices(DeviceType.STEPPER);
+    }
+
 	@Override
 	public void initialize(WS4PiConfig config) throws Exception {
+		this.config = config;
+        Device[] devices = getDevices();
+        steppers = new GpioStepperMotorComponent[devices.length];
+        if (steppers.length==0)
+        	return;
+        
+        // FIXME: configure each stepper instead of assuming there are only 2
         GpioPin[] pins1 = config.getGpioPins(DeviceType.STEPPER, 0);
         GpioPin[] pins2 = config.getGpioPins(DeviceType.STEPPER, 1); 
 
@@ -106,6 +120,9 @@ public class StepperMotorController extends DeviceController {
 	@Override
 	public void start(WS4PiConfig config) {
         // add limit switches for the steppers
+		if (steppers.length==0)
+			return;
+		
 		SwitchController controller = (SwitchController)config.getDeviceProvider().getDeviceController(DeviceType.SWITCH);
 
 		for (int i=0; i<getComponentCount(); ++i) {

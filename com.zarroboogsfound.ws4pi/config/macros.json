@@ -113,6 +113,200 @@
 			]
 		},
 		{
+			"name": "curious down",
+			"description": "curious expression while looking down",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Neck Top",
+					"value": "-20"
+					
+				},
+				{
+					"type": "servo",
+					"name": "Neck Bottom",
+					"value": 20
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": "70"
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": "-60"
+				},
+				{
+					"type": "servo",
+					"name": "Right Eyebrow",
+					"value": "50"
+				},
+				{
+					"type": "servo",
+					"name": "Left Eyebrow",
+					"value": "50"
+				},
+				{
+					"type": "delay",
+					"value": 1000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": "70"
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": "-60"
+				},
+				{
+					"type": "delay",
+					"value": 1000.0
+				},
+				{
+					"type": "macro",
+					"name": "head neutral"
+				}
+			]
+		},
+		{
+			"name": "curious up",
+			"description": "curious expression while looking down",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Neck Top",
+					"value": "-100"
+					
+				},
+				{
+					"type": "servo",
+					"name": "Neck Bottom",
+					"value": -40
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": "70"
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": "-60"
+				},
+				{
+					"type": "servo",
+					"name": "Right Eyebrow",
+					"value": "50"
+				},
+				{
+					"type": "servo",
+					"name": "Left Eyebrow",
+					"value": "50"
+				},
+				{
+					"type": "delay",
+					"value": 1000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": "70"
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": "-60"
+				},
+				{
+					"type": "delay",
+					"value": 1000.0
+				},
+				{
+					"type": "macro",
+					"name": "head neutral"
+				}
+			]
+		},
+		{
+			"name": "head neutral",
+			"description": "return head to neutral position",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Right Eyebrow",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Left Eyebrow",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Head Turn",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Top",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Bottom",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "themeSong",
 			"description": "play 'Put on your Sunday clothes'",
 			"actions": [
@@ -340,7 +534,17 @@
 					"name": "Neck Top",
 					"targets": [
 						{
-							"position": -100,
+							"position": 0,
+							"stepDelay": 0.5
+						}
+					]
+				},
+				{
+					"type": "servo",
+					"name": "Neck Bottom",
+					"targets": [
+						{
+							"position": -20,
 							"stepDelay": 0.5
 						}
 					]
@@ -354,37 +558,13 @@
 					"value": 2000.0
 				},
 				{
-					"type": "servo",
-					"name": "Left eyebrow",
-					"targets": [
-						{
-							"position": 100
-						}
-					]
-				},
-				{
-					"type": "servo",
-					"name": "Right eyebrow",
-					"targets": [
-						{
-							"position": 100
-						}
-					]
-				},
-				{
-					"type": "servo",
-					"name": "Neck Top",
-					"targets": [
-						{
-							"position": -60,
-							"stepDelay": 0.5
-						}
-					]
+					"type": "macro",
+					"name": "head neutral"
 				}
 			]
 		},
 		{
-			"name": "self-test",
+			"name": "head warmup",
 			"description": "warmup exercises",
 			"actions": [
 				{
@@ -408,7 +588,7 @@
 				{
 					"type": "servo",
 					"name": "Right Eye",
-					"value": 90
+					"value": 100
 				},
 				{
 					"type": "delay",
@@ -417,7 +597,7 @@
 				{
 					"type": "servo",
 					"name": "Left Eye",
-					"value": 90
+					"value": 100
 				},
 				{
 					"type": "delay",
@@ -444,12 +624,12 @@
 				{
 					"type": "servo",
 					"name": "Right Eye",
-					"value": 90
+					"value": 100
 				},
 				{
 					"type": "servo",
 					"name": "Left Eye",
-					"value": 90
+					"value": 100
 				},
 				{
 					"type": "delay",
@@ -464,6 +644,10 @@
 					"type": "servo",
 					"name": "Left Eye",
 					"value": 15
+				},
+				{
+					"type": "macro",
+					"name": "head neutral"
 				}
 			]
 		},
@@ -517,101 +701,6 @@
 				{
 					"type": "servo",
 					"name": "Right Arm",
-					"value": 999
-				}
-			]
-		},
-		{
-			"name": "softServoTest",
-			"description": "macro to test operation of slow servo code",
-			"actions": [
-				{
-					"type": "servo",
-					"name": "Left Shoulder",
-					"value": -100
-				},
-				{
-					"type": "delay",
-					"value": 2000.0
-				},
-				{
-					"type": "servo",
-					"name": "Left Shoulder",
-					"value": 100
-				},
-				{
-					"type": "delay",
-					"value": 2000.0
-				},
-				{
-					"type": "servo",
-					"name": "Left Shoulder",
-					"value": -100
-				}
-			]
-		},
-		{
-			"name": "touchdown-run-pose",
-			"description": "getting ready for the big touchdown",
-			"actions": [
-				{
-					"type": "servo",
-					"name": "Left Shoulder",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Shoulder",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Hand",
-					"value": 999
-				},
-				{
-					"type": "delay",
-					"value": 2000.0
-				},
-				{
-					"type": "servo",
-					"name": "Left Arm",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Arm",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Shoulder",
-					"value": 90
-				},
-				{
-					"type": "servo",
-					"name": "Right Hand",
-					"value": 0
-				}
-			]
-		},
-		{
-			"name": "touchdown-dance",
-			"description": "touchdown spike and dance",
-			"actions": [
-				{
-					"type": "servo",
-					"name": "Left Shoulder",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Shoulder",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Hand",
 					"value": 999
 				}
 			]

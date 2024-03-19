@@ -17,6 +17,7 @@ import com.pi4j.io.gpio.RaspiPin;
 import com.zarroboogsfound.ws4pi.DeviceType;
 import com.zarroboogsfound.ws4pi.WS4PiConfig;
 import com.zarroboogsfound.ws4pi.data.QueryParams;
+import java.util.concurrent.Callable;
 
 import io.undertow.server.HttpServerExchange;
 
@@ -64,7 +65,7 @@ public class DualMotorBridgeController extends DeviceController {
 						double d1 = lookdownSensor.measure();
 						double d2 = lookforwardSensor.measure();
 						/*
-						if (d>15.0) {
+						if (d2>15.0) {
 							for (int i=0; i<5; ++i) {
 								d = lookdownSensor.measure();
 								if (d<15.0)
@@ -101,23 +102,6 @@ public class DualMotorBridgeController extends DeviceController {
 			
 		};
 		//poller.start();
-		/*
-		sensor.onObjectFound(new Callable() {
-			@Override
-			public Object call() throws Exception {
-				System.out.println("Object found: "+sensor.measure());
-				return null;
-			}
-		});
-		sensor.onObjectLost(new Callable() {
-			@Override
-			public Object call() throws Exception {
-				System.out.println("Object lost");
-				bridges[0].setSpeedVector(new SpeedVector(0,0));
-				return null;
-			}
-		});
-		*/
 	}
 
 	public void stop() {
