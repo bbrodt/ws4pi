@@ -150,6 +150,13 @@ public class MacroRunner {
 						System.out.println(System.currentTimeMillis()+" DELAY "+a.value);
 						Thread.sleep((long)a.value);
 						break;
+					case WAIT:
+						System.out.println(System.currentTimeMillis()+" WAIT "+a.name);
+						ServoController c = (ServoController)config.getDeviceProvider().getDeviceController(DeviceType.SERVO);
+						Device sd = config.getDevice(DeviceType.SERVO, a.name);
+						while (c.isBusy(sd.id))
+							Thread.sleep(500);
+						break;
 					case LED:
 						// FIX ME: currently only 1 LED is supported, id=0
 						LEDController ledCtl = (LEDController)controller;

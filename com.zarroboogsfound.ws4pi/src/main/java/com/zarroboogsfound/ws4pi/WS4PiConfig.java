@@ -49,8 +49,8 @@ public class WS4PiConfig {
 			public String name;
 			// type, direction and state information for provisioning
 			public String provision;
-			// the pin's WiringPi address
-			public int address;
+			// the pin's Broadcom GPIO pin number
+			public int gpio;
 			// the provisioned pin defined by the Gpio class:
 			public GpioPin pin;
 		}
@@ -59,6 +59,7 @@ public class WS4PiConfig {
 			public float startPos; // ServoController will move each servo to this position in DeviceController.start() 
 			public float minPos;
 			public float maxPos;
+			public float stopPos;
 			public float maxTorque; // measured in Kg-cm
 			public float speed; // measured in # of milliseconds to move through its entire range (-100 to 100)
 			public boolean reversed;
@@ -234,7 +235,7 @@ public class WS4PiConfig {
 	}
 	
 	private GpioPin provisionPin(Device device, Device.PinDefinition pinDef) throws Exception {
-		Pin pin = RaspiPin.getPinByAddress(pinDef.address);
+		Pin pin = RaspiPin.getPinByAddress(pinDef.gpio);
 		GpioPin provisionedPin = null;
 		DeviceController controller = deviceProvider.getDeviceController(DeviceType.valueOf(device.type.toUpperCase()));
 		GpioProvider gpioProvider = controller.getGpioProvider();

@@ -13,17 +13,17 @@
 				{
 					"name": "IN1",
 					"provision": "digital output low",
-					"address": 23
+					"gpio": 23
 				},
 				{
 					"name": "IN2",
 					"provision": "digital output low",
-					"address": 24
+					"gpio": 24
 				},
 				{
 					"name": "ENA",
 					"provision": "digital softpwm low",
-					"address": 25
+					"gpio": 25
 				}
 			]
 		},
@@ -35,17 +35,17 @@
 				{
 					"name": "IN3",
 					"provision": "digital output low",
-					"address": 15
+					"gpio": 15
 				},
 				{
 					"name": "IN4",
 					"provision": "digital output low",
-					"address": 14
+					"gpio": 14
 				},
 				{
 					"name": "ENB",
 					"provision": "digital softpwm low",
-					"address": 17
+					"gpio": 17
 				}
 			]
 		},
@@ -57,12 +57,12 @@
 				{
 					"name": "TRIG",
 					"provision": "digital output low",
-					"address": 27
+					"gpio": 27
 				},
 				{
 					"name": "ECHO",
 					"provision": "digital input pulldown",
-					"address": 22
+					"gpio": 22
 				}
 			]
 		},
@@ -74,12 +74,12 @@
 				{
 					"name": "TRIG",
 					"provision": "digital output low",
-					"address": 6
+					"gpio": 6
 				},
 				{
 					"name": "ECHO",
 					"provision": "digital input pulldown",
-					"address": 13
+					"gpio": 13
 				}
 			]
 		},
@@ -91,7 +91,7 @@
 				{
 					"name": "OUT",
 					"provision": "digital output low",
-					"address": 5
+					"gpio": 5
 				}
 			]
 		},
@@ -104,6 +104,7 @@
 			"limits": {
 				"reversed": "true",
 				"startPos": -90,
+				"stopPos": -90,
 				"minPos": -90,
 				"maxPos": 90,
 				"maxTorque": 25,
@@ -123,6 +124,7 @@
 			"limits": {
 				"reversed": "true",
 				"startPos": 70,
+				"stopPos":  70,
 				"minPos": -70,
 				"maxPos": 80,
 				"maxTorque": 25,
@@ -141,6 +143,7 @@
 			"id": 2,
 			"limits": {
 				"startPos": -95,
+				"stopPos":  -95,
 				"minPos": -95,
 				"maxPos": 25,
 				"maxTorque": 25,
@@ -158,7 +161,8 @@
 			"name": "Right Wrist",
 			"id": 3,
 			"limits": {
-				"startPos": 0,
+				"startPos": -100,
+				"stopPos":  -100,
 				"minPos": -100,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -177,6 +181,7 @@
 			"id": 4,
 			"limits": {
 				"startPos": -90,
+				"stopPos":  -90,
 				"minPos": -90,
 				"maxPos": 60,
 				"maxTorque": 25,
@@ -195,6 +200,7 @@
 			"id": 5,
 			"limits": {
 				"startPos": 70,
+				"stopPos":  70,
 				"minPos": -70,
 				"maxPos": 80,
 				"maxTorque": 25,
@@ -214,6 +220,7 @@
 			"limits": {
 				"reversed": "true",
 				"startPos": -25,
+				"stopPos":  -25,
 				"minPos": -25,
 				"maxPos": 95,
 				"maxTorque": 25,
@@ -232,7 +239,8 @@
 			"id": 7,
 			"limits": {
 				"reversed": "true",
-				"startPos": 0,
+				"startPos": -100,
+				"stopPos":  -100,
 				"minPos": -100,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -252,6 +260,7 @@
 			"limits": {
 				"reversed": "true",
 				"startPos": 17,
+				"stopPos":  17,
 				"minPos": -75,
 				"maxPos": 80,
 				"maxTorque": 25,
@@ -270,6 +279,7 @@
 			"id": 9,
 			"limits": {
 				"startPos": -100,
+				"stopPos":  -100,
 				"minPos": -100,
 				"maxPos": 70,
 				"maxTorque": 25,
@@ -288,6 +298,7 @@
 			"id": 10,
 			"limits": {
 				"startPos": 20,
+				"stopPos":  20,
 				"minPos": -80,
 				"maxPos": 70,
 				"maxTorque": 25,
@@ -324,6 +335,7 @@
 			"id": 12,
 			"limits": {
 				"startPos": 100,
+				"stopPos":  100,
 				"minPos": -60,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -342,6 +354,7 @@
 			"id": 13,
 			"limits": {
 				"startPos": 0,
+				"stopPos":  70,
 				"minPos": -60,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -361,6 +374,7 @@
 			"limits": {
 				"reversed": "true",
 				"startPos": 100,
+				"stopPos":  100,
 				"minPos": -60,
 				"maxPos": 100,
 				"maxTorque": 25,
@@ -380,6 +394,7 @@
 			"limits": {
 				"reversed": "true",
 				"startPos": 0,
+				"stopPos":  70,
 				"minPos": -60,
 				"maxPos": 70,
 				"maxTorque": 25,

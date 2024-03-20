@@ -5,6 +5,72 @@
 	"description": "First attempt",
 	"macros": [
 		{
+			"name": "handshake",
+			"description": "shake hands with Wall-E",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"value": "100"
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": "0"
+				},
+				{
+					"type": "servo",
+					"name": "Right Wrist",
+					"value": "0"
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"value": "-20"
+				},
+				{
+					"type": "sound",
+					"name": "WALLE1.wav"
+				},
+				{
+					"type": "delay",
+					"value": "5000"
+				},
+				{
+					"type": "loop",
+					"value": "3",
+					"actions": [
+						{
+							"type": "servo",
+							"name": "Right Shoulder",
+							"targets": [
+								{
+									"position": 20,
+									"stepDelay": 0.2
+								},
+								{
+									"position": -10,
+									"stepDelay": 0.2
+								}
+							]
+						},
+						{
+							"type": "wait",
+							"name": "Right Shoulder"
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": "2000"
+				},
+				{
+					"type": "macro",
+					"name": "arms neutral"
+				}
+			]
+		},
+		{
 			"name": "kitty toy",
 			"description": "turn on laser and move head to let kitty chase the red dot",
 			"actions": [
@@ -227,6 +293,120 @@
 				{
 					"type": "macro",
 					"name": "head neutral"
+				}
+			]
+		},
+		{
+			"name": "arms neutral",
+			"description": "return arms and hands to neutral position",
+			"actions": [
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Hand",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Right Wrist",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Shoulder",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Hand",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
+				},
+				{
+					"type": "delay",
+					"value": 800.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Wrist",
+					"targets": [
+						{
+							"limitPos": "startPos",
+							"stepDelay": 0.2
+						}
+					]
 				}
 			]
 		},

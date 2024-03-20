@@ -118,14 +118,16 @@ public class ServoController extends DeviceController {
         	try {
                 TargetPosition t[] = new TargetPosition[1];
                 t[0] = new TargetPosition();
-        		t[0].position = d.limits.startPos;
+        		t[0].position = d.limits.stopPos;
                 t[0].startSteps = 12;
                 t[0].stopSteps = 12;
                 t[0].stepDelay = 1;
+        		System.out.println("Stopping channel "+channel);
 
 	            positioners[channel] = new Positioner(channel, t);
+	            positioners[channel].run();
 				while (isBusy(1))
-					Thread.sleep(500);
+					Thread.sleep(1000);
 	            positioners[channel] = null;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -138,13 +140,10 @@ public class ServoController extends DeviceController {
         for (int channel=0; channel<servos.length; ++channel) {
         	Device d = getDevices()[channel];
         	try {
-        		System.out.println("Closing channel "+channel);
-				setPosition(channel, d.limits.startPos);
-				Thread.sleep(100);
-			} catch (DeviceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
+        		System.out.println("Waiting for channel "+channel);
+        		while (isBusy(channel))
+        			Thread.sleep(100);
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
