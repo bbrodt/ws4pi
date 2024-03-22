@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.wildfly.common.annotation.NotNull;
@@ -15,10 +17,12 @@ import com.zarroboogsfound.ws4pi.data.QueryParams;
 
 import io.undertow.server.HttpServerExchange;
 
-public class ExecProcController extends DeviceController {
+public class ExecController extends DeviceController {
 
-	public ExecProcController() {
-		super(DeviceType.EXECPROC);
+	private List<Process> procList = new ArrayList<Process>();
+	
+	public ExecController() {
+		super(DeviceType.EXEC);
 	}
 
 	@Override
@@ -53,10 +57,14 @@ public class ExecProcController extends DeviceController {
 
 	@Override
 	public void start(WS4PiConfig config) {
+		exec("mjpeg_server.py");
 	}
 	
 	@Override
 	public void stop() {
+		for (Process p : procList) {
+			kill(p.pid());
+		}
 	}
 	
 	public Process exec(String cmd) {
@@ -99,10 +107,11 @@ public class ExecProcController extends DeviceController {
 		ExecProcThread t = new ExecProcThread(cmd);
 		Process p = t.exec();
 		t.start();
+		procList.add(p);
 		return p;
 	}
 
-	public int kill(int pid) {
+	public long kill(long pid) {
 		Optional<ProcessHandle> h = ProcessHandle.of(pid);
 		if (h.isPresent()) {
 			h.get().destroy();
@@ -111,8 +120,8 @@ public class ExecProcController extends DeviceController {
 		return 0;
 	}
 	
-	public boolean isBusy(int id) {
-		Optional<ProcessHandle> h = ProcessHandle.of(id);
+	public boolean isBusy(int pid) {
+		Optional<ProcessHandle> h = ProcessHandle.of(pid);
 		if (h.isPresent()) {
 			return h.get().isAlive();
 		}

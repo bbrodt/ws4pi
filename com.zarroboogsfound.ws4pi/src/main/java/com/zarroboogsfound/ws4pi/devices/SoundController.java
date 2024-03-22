@@ -43,6 +43,13 @@ public class SoundController extends DeviceController {
 	@Override
 	public void stop() {
 		play("sounds/shutdown.wav");
+		try {
+			// allow shutdown sound to play before the entire process exits
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void play(final String filepath) {

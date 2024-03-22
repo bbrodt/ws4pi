@@ -12,6 +12,7 @@ import com.zarroboogsfound.ws4pi.WS4PiConfig;
 import com.zarroboogsfound.ws4pi.WS4PiConfig.Device;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
 import com.zarroboogsfound.ws4pi.devices.DualMotorBridgeController;
+import com.zarroboogsfound.ws4pi.devices.ExecController;
 import com.zarroboogsfound.ws4pi.devices.LEDController;
 import com.zarroboogsfound.ws4pi.devices.ServoController;
 import com.zarroboogsfound.ws4pi.devices.SoundController;
@@ -176,6 +177,10 @@ public class MacroRunner {
 						for (int loopcount=0; loopcount<a.value; ++loopcount) {
 							runActions(a.actions);
 						}
+						break;
+					case EXEC:
+						ExecController execCtl = (ExecController)controller;
+						execCtl.exec(a.name);
 						break;
 					default:
 						break;
