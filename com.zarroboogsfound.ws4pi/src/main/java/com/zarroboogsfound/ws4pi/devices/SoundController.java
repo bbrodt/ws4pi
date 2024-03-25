@@ -58,15 +58,21 @@ public class SoundController extends DeviceController {
 			@Override
 			public void run() {
 				try {
-					Process proc = Runtime.getRuntime().exec(new String[] {"mplayer",filepath} );
+					Process proc = Runtime.getRuntime().exec(new String[] {"cvlc", "--aout=alsa", "--no-video", "--play-and-exit", filepath} );
 		            InputStream stderr = proc.getErrorStream();
 		            InputStreamReader isr = new InputStreamReader(stderr);
 		            BufferedReader br = new BufferedReader(isr);
 		            String line = null;
-		            System.out.println("<ERROR>");
-		            while ( (line = br.readLine()) != null)
+		            int lineCount = 0;
+		            while ( (line = br.readLine()) != null) {
+		            	if (lineCount==0) {
+				            System.out.println("<ERROR>");
+		            	}
 		                System.out.println(line);
-		            System.out.println("</ERROR>");
+		                ++lineCount;
+		            }
+		            if (lineCount>0)
+		            	System.out.println("</ERROR>");
 					int exitVal = proc.waitFor();
 					System.out.println("Process exitValue: " + exitVal);
 				} catch (Throwable t) {

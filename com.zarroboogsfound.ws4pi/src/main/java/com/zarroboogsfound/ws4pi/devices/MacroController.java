@@ -81,9 +81,21 @@ public class MacroController extends DeviceController {
 		});
 		watcher.watch();
 		macroRunner.start();
+		try {
+			macroRunner.run("startup");
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void stop() {
+		try {
+			macroRunner.run("macro shutdown");
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		macroRunner.stop();
 	}
 	

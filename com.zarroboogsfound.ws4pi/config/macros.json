@@ -330,10 +330,6 @@
 					]
 				},
 				{
-					"type": "delay",
-					"value": 800.0
-				},
-				{
 					"type": "servo",
 					"name": "Right Arm",
 					"targets": [
@@ -342,10 +338,6 @@
 							"stepDelay": 0.2
 						}
 					]
-				},
-				{
-					"type": "delay",
-					"value": 800.0
 				},
 				{
 					"type": "servo",
@@ -358,10 +350,6 @@
 					]
 				},
 				{
-					"type": "delay",
-					"value": 800.0
-				},
-				{
 					"type": "servo",
 					"name": "Right Wrist",
 					"targets": [
@@ -370,10 +358,6 @@
 							"stepDelay": 0.2
 						}
 					]
-				},
-				{
-					"type": "delay",
-					"value": 800.0
 				},
 				{
 					"type": "servo",
@@ -386,10 +370,6 @@
 					]
 				},
 				{
-					"type": "delay",
-					"value": 800.0
-				},
-				{
 					"type": "servo",
 					"name": "Left Arm",
 					"targets": [
@@ -400,10 +380,6 @@
 					]
 				},
 				{
-					"type": "delay",
-					"value": 800.0
-				},
-				{
 					"type": "servo",
 					"name": "Left Hand",
 					"targets": [
@@ -412,10 +388,6 @@
 							"stepDelay": 0.2
 						}
 					]
-				},
-				{
-					"type": "delay",
-					"value": 800.0
 				},
 				{
 					"type": "servo",
@@ -763,17 +735,21 @@
 			]
 		},
 		{
-			"name": "head warmup",
-			"description": "warmup exercises",
+			"name": "startup",
+			"description": "startup dance",
 			"actions": [
 				{
+					"type": "delay",
+					"value": 2000
+				},
+				{
 					"type": "servo",
 					"name": "Right Eye",
 					"value": 15
 				},
 				{
-					"type": "delay",
-					"value": 500.0
+					"type": "wait",
+					"name": "Right Eye"
 				},
 				{
 					"type": "servo",
@@ -781,12 +757,53 @@
 					"value": 15
 				},
 				{
-					"type": "delay",
-					"value": 500.0
+					"type": "wait",
+					"name": "Left Eye"
 				},
 				{
 					"type": "servo",
 					"name": "Right Eye",
+					"value": 100
+				},
+				{
+					"type": "wait",
+					"name": "Right Eye"
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 100
+				},
+				{
+					"type": "wait",
+					"name": "Left Eye"
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 15
+				},
+				{
+					"type": "wait",
+					"name": "Right Eye"
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
+					"value": 15
+				},
+				{
+					"type": "wait",
+					"name": "Left Eye"
+				},
+				{
+					"type": "servo",
+					"name": "Right Eye",
+					"value": 100
+				},
+				{
+					"type": "servo",
+					"name": "Left Eye",
 					"value": 100
 				},
 				{
@@ -795,47 +812,6 @@
 				},
 				{
 					"type": "servo",
-					"name": "Left Eye",
-					"value": 100
-				},
-				{
-					"type": "delay",
-					"value": 500.0
-				},
-				{
-					"type": "servo",
-					"name": "Right Eye",
-					"value": 15
-				},
-				{
-					"type": "delay",
-					"value": 500.0
-				},
-				{
-					"type": "servo",
-					"name": "Left Eye",
-					"value": 15
-				},
-				{
-					"type": "delay",
-					"value": 500.0
-				},
-				{
-					"type": "servo",
-					"name": "Right Eye",
-					"value": 100
-				},
-				{
-					"type": "servo",
-					"name": "Left Eye",
-					"value": 100
-				},
-				{
-					"type": "delay",
-					"value": 500.0
-				},
-				{
-					"type": "servo",
 					"name": "Right Eye",
 					"value": 15
 				},
@@ -843,10 +819,88 @@
 					"type": "servo",
 					"name": "Left Eye",
 					"value": 15
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
+				},
+				{
+					"type": "motor_bridge",
+					"name": "Tracks",
+					"value": "1.0",
+					"direction": "270.0"
+					
+				},
+				{
+					"type": "delay",
+					"value": 5000.0
+				},
+				{
+					"type": "motor_bridge",
+					"name": "Tracks",
+					"value": "0.0",
+					"direction": "0.0"
+				},
+				{
+					"type": "delay",
+					"value": 1000.0
+				},
+				{
+					"type": "servo",
+					"name": "Left Shoulder",
+					"value": -50
+				},
+				{
+					"type": "servo",
+					"name": "Left Arm",
+					"value": -70
+				},
+				{
+					"type": "servo",
+					"name": "Left Wrist",
+					"value": "100"
+				},
+				{
+					"type": "servo",
+					"name": "Right Shoulder",
+					"value": -50
+				},
+				{
+					"type": "servo",
+					"name": "Right Arm",
+					"value": -70
+				},
+				{
+					"type": "servo",
+					"name": "Right Wrist",
+					"value": "100"
+				},
+				{
+					"type": "sound",
+					"name": "ta-da.mp3"
+				},
+				{
+					"type": "delay",
+					"value": 2000.0
 				},
 				{
 					"type": "macro",
-					"name": "head neutral"
+					"name": "arms neutral"
+				}
+				
+			]
+		},
+		{
+			"name": "shutdown",
+			"description": "shutdown wall-e",
+			"actions": [
+				{			
+					"type": "delay",
+					"value": 5000
+				},
+				{
+					"type": "exec",
+					"name": "kill-wall-e"
 				}
 			]
 		},
@@ -872,7 +926,7 @@
 				{
 					"type": "servo",
 					"name": "Right Arm",
-					"value": -570
+					"value": -70
 				},
 				{
 					"type": "sound",
@@ -883,24 +937,8 @@
 					"value": 2000.0
 				},
 				{
-					"type": "servo",
-					"name": "Left Shoulder",
-					"value": -999
-				},
-				{
-					"type": "servo",
-					"name": "Left Arm",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Shoulder",
-					"value": 999
-				},
-				{
-					"type": "servo",
-					"name": "Right Arm",
-					"value": 999
+					"type": "macro",
+					"name": "arms neutral"
 				}
 			]
 		},
