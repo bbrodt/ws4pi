@@ -22,6 +22,7 @@ import com.pi4j.io.gpio.RaspiPin;
 import com.zarroboogsfound.ws4pi.WS4PiConfig.Device.PinDefinition;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
 import com.zarroboogsfound.ws4pi.devices.DeviceControllerProvider;
+import com.zarroboogsfound.ws4pi.devices.ExecController;
 import com.zarroboogsfound.ws4pi.file.FileEvent;
 import com.zarroboogsfound.ws4pi.file.FileEventAdapter;
 import com.zarroboogsfound.ws4pi.file.FileWatcher;
@@ -213,6 +214,10 @@ public class WS4PiConfig {
 		return null;
 	}
 	
+	public Device[] getDevices(){
+		return devices.toArray(new Device[devices.size()]);
+	}
+	
 	public Device[] getDevices(DeviceType type) {
 		List<Device> results = new ArrayList<Device>();
 		
@@ -236,6 +241,7 @@ public class WS4PiConfig {
 	
 	private GpioPin provisionPin(Device device, Device.PinDefinition pinDef) throws Exception {
 		Pin pin = RaspiPin.getPinByAddress(pinDef.gpio);
+	
 		GpioPin provisionedPin = null;
 		DeviceController controller = deviceProvider.getDeviceController(DeviceType.valueOf(device.type.toUpperCase()));
 		GpioProvider gpioProvider = controller.getGpioProvider();
@@ -246,6 +252,12 @@ public class WS4PiConfig {
 		}
 		if (p[0].equalsIgnoreCase("digital")) {
 			if (p[1].equalsIgnoreCase("input")) {
+				/**********************************************
+				 * Workaround for broken native code gpio export: spawn the gpio program to do the export
+				 * instead of doing it in C code native library
+				 */
+				ExecController.publicExec("gpio export "+pinDef.gpio+" in", true);
+
 				if (p[2].equalsIgnoreCase("pullup"))
 					provisionedPin = gpio.provisionDigitalInputPin(gpioProvider, pin, PinPullResistance.PULL_UP);
 				else if (p[2].equalsIgnoreCase("pulldown"))
@@ -254,6 +266,12 @@ public class WS4PiConfig {
 					throw new IllegalArgumentException("Invalid provisioning parameter '"+pinDef.provision+"' in Configuration File");
 			}
 			else if (p[1].equalsIgnoreCase("output")) {
+				/**********************************************
+				 * Workaround for broken native code gpio export: spawn the gpio program to do the export
+				 * instead of doing it in C code native library
+				 */
+				ExecController.publicExec("gpio export "+pinDef.gpio+" out", true);
+
 				if (p[2].equalsIgnoreCase("low")) {
 					provisionedPin = gpio.provisionDigitalOutputPin(gpioProvider, pin, PinState.LOW);
 				}
@@ -263,6 +281,12 @@ public class WS4PiConfig {
 					throw new IllegalArgumentException("Invalid provisioning parameter '"+pinDef.provision+"' in Configuration File");
 			}
 			else if (p[1].equalsIgnoreCase("softpwm")) {
+				/**********************************************
+				 * Workaround for broken native code gpio export: spawn the gpio program to do the export
+				 * instead of doing it in C code native library
+				 */
+				ExecController.publicExec("gpio export "+pinDef.gpio+" out", true);
+
 				provisionedPin = gpio.provisionSoftPwmOutputPin(gpioProvider, pin);
 			}
 		}

@@ -735,7 +735,7 @@
 			]
 		},
 		{
-			"name": "startup",
+			"name": "#startup",
 			"description": "startup dance",
 			"actions": [
 				{
@@ -891,7 +891,7 @@
 			]
 		},
 		{
-			"name": "shutdown",
+			"name": "#shutdown",
 			"description": "shutdown wall-e",
 			"actions": [
 				{			

@@ -1,5 +1,5 @@
 {
-	"httpServerName": "192.168.10.148",
+	"httpServerName": "192.168.10.149",
 	"httpServerPort": "8081",
 	"keyStoreFile": "config/keystore.jks",
 	"password": "Sn1ckers",

@@ -1,6 +1,8 @@
 package com.zarroboogsfound.ws4pi;
 
+import com.zarroboogsfound.ws4pi.WS4PiConfig.Device;
 import com.zarroboogsfound.ws4pi.devices.DeviceController;
+import com.zarroboogsfound.ws4pi.devices.ExecController;
 
 public class ShutdownHook extends Thread {
 
@@ -18,6 +20,16 @@ public class ShutdownHook extends Thread {
 		}
 		for (DeviceController dc : dcs) {
 			dc.shutdown();
+		}
+		/**********************************************
+		 * Workaround for broken native code gpio unexport: spawn the gpio program to do the unexport
+		 * instead of doing it in C code native library
+		 */
+		Device[] devices = config.getDevices();
+		for (Device d : devices) {
+			for (Device.PinDefinition p : d.pins) {
+				ExecController.publicExec("gpio unexport "+p.gpio, true);
+			}
 		}
 	}
 }

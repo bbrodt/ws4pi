@@ -67,7 +67,7 @@ public class ExecController extends DeviceController {
 		}
 	}
 	
-	public Process exec(String cmd) {
+	public static Process publicExec(String cmd, boolean wait) {
 		class ExecProcThread extends Thread {
 			private Process proc;
 			private String cmdLine;
@@ -107,7 +107,21 @@ public class ExecController extends DeviceController {
 		ExecProcThread t = new ExecProcThread(cmd);
 		Process p = t.exec();
 		t.start();
-		procList.add(p);
+		if (wait) {
+			try {
+				p.waitFor();
+			}
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+		return p;
+	}
+	
+	public Process exec(String cmd) {
+		Process p = publicExec(cmd, false);
+		if (p!=null)
+			procList.add(p);
 		return p;
 	}
 
